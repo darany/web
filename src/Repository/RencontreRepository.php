@@ -21,6 +21,25 @@ class RencontreRepository extends ServiceEntityRepository
         parent::__construct($registry, Rencontre::class);
     }
 
+   /**
+    * @return Rencontre[] Retourne les matchs du jour 
+    */
+   public function rencontresDuJour(): array
+   {
+        $dateTime = new \DateTime();
+        return $this->createQueryBuilder('rencontre')
+           ->andWhere('rencontre.HeureDebut BETWEEN :dateMin AND :dateMax')
+           ->setParameters([
+                 'dateMin' => $dateTime->format('Y-m-d 00:00:00'),
+                 'dateMax' => $dateTime->format('Y-m-d 23:59:59')
+            ])
+           ->orderBy('rencontre.HeureDebut', 'DESC')
+           ->getQuery()
+           ->getResult()
+       ;
+   }
+
+
 //    /**
 //     * @return Rencontre[] Returns an array of Rencontre objects
 //     */
