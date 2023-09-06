@@ -82,7 +82,9 @@ jobs:
 
       - name: PHPUnit Tests
         run: simple-phpunit --coverage-clover ./coverage.xml
-
+        env:
+          DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony
+        
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         env:
