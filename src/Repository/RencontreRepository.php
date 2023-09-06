@@ -33,27 +33,22 @@ class RencontreRepository extends ServiceEntityRepository
                  'dateMin' => $dateTime->format('Y-m-d 00:00:00'),
                  'dateMax' => $dateTime->format('Y-m-d 23:59:59')
             ])
-           ->orderBy('rencontre.HeureDebut', 'DESC')
+           ->orderBy('rencontre.HeureDebut', 'ASC')
            ->getQuery()
-           ->getResult()
-       ;
+           ->getResult();
    }
 
 
-//    /**
-//     * @return Rencontre[] Returns an array of Rencontre objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   /**
+    * @return Rencontre[] Retourne tous les matchs
+    */
+   public function toutesLesRencontres(): array
+   {
+        return $this->createQueryBuilder('rencontre')
+            ->orderBy('rencontre.HeureDebut', 'ASC')
+            ->getQuery()
+            ->getResult();
+   }
 
 //    public function findOneBySomeField($value): ?Rencontre
 //    {
@@ -61,7 +56,6 @@ class RencontreRepository extends ServiceEntityRepository
 //            ->andWhere('r.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
+//            ->getOneOrNullResult();
 //    }
 }

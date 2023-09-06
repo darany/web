@@ -76,7 +76,7 @@
         <div class="col-8 center-block">
             <h1 class="">Bienvenue sur l'application superbowl</h1>
             <a href="#" class="btn btn-primary">Se connecter</a>
-            <a href="#" class="btn btn-primary">Visualiser tous les matchs</a>
+            <a href="rencontre" class="btn btn-primary">Visualiser tous les matchs</a>
             <a href="#" class="btn btn-primary">Parier</a>
         </div>
         <div class="col-2"></div>
@@ -92,7 +92,7 @@
             <table class="table">
             {% for rencontre in rencontres %}
                 <tr>
-                    <td>{{ rencontre.heureDebut |date("H:m") }}</td>
+                    <td>{{ rencontre.heureDebut |date("H:i") }}</td>
                     <td>{{ rencontre.EquipeA.Nom |e}}</td>
                     <td><span class="badge rounded-pill bg-info text-dark">{{ rencontre.CoteEquipeA |e}} &mdash; {{ rencontre.CoteEquipeB |e}}</span></td>
                     <td>{{ rencontre.EquipeB.Nom |e}}</td>
