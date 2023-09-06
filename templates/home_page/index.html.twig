@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Application superbowl{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div id="carouselPresentationEvent" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselPresentationEvent" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselPresentationEvent" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselPresentationEvent" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselPresentationEvent" data-bs-slide-to="3" aria-label="Slide 4"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{{ asset('images/carousel1.jpg') }}" class="d-block w-100" alt="image de football américain">
+                    <div class="carousel-caption d-none d-md-block">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5>Un championnat annuel de football américain</h5>
+                                <p>Le Super Bowl est le championnat annuel de football américain de la National Football League (NFL) aux États-Unis. C'est l'un des événements sportifs les plus regardés au monde. Le Super Bowl se déroule généralement le premier dimanche de février et oppose les champions de la Conférence de l'AFC (American Football Conference) et de la Conférence de la NFC (National Football Conference).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ asset('images/carousel2.jpg') }}" class="d-block w-100" alt="image de football américain">
+                    <div class="carousel-caption d-none d-md-block">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5>Un spectacle médiatique majeur</h5>
+                                <p>Le Super Bowl n'est pas seulement un match de football, c'est aussi un spectacle médiatique majeur. Il est célèbre pour ses publicités coûteuses diffusées pendant la diffusion télévisée, ainsi que pour son spectacle de mi-temps, qui met en vedette des artistes de renom.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ asset('images/carousel3.jpg') }}" class="d-block w-100" alt="image de football américain">
+                    <div class="carousel-caption d-none d-md-block">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5>Le trophée Lombardi</h5>
+                                <p>Les équipes qui participent au Super Bowl rivalisent pour remporter le trophée Lombardi, du nom de l'entraîneur légendaire Vince Lombardi. Le Super Bowl attire un large public, même parmi ceux qui ne suivent pas régulièrement le football américain, en raison de son aspect festif, de ses performances de haut niveau et de son intrigue sportive.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ asset('images/carousel4.jpg') }}" class="d-block w-100" alt="image de football américain">
+                    <div class="carousel-caption d-none d-md-block">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5>Des paris responsables</h5>
+                                <p>Il est important de noter que les paris sportifs comportent des risques et que vous devez toujours parier de manière responsable, en n'investissant que ce que vous pouvez vous permettre de perdre. De plus, les lois sur les jeux de hasard et les paris sportifs varient d'un endroit à l'autre, alors assurez-vous de respecter les lois locales en matière de jeu.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselPresentationEvent" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselPresentationEvent" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+        </div>
+    </div>
+    <div class="row"><div class="col-12">&nbsp;</div></div>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8 center-block">
+            <h1 class="">Bienvenue sur l'application superbowl</h1>
+            <a href="#" class="btn btn-primary">Se connecter</a>
+            <a href="#" class="btn btn-primary">Visualiser tous les matchs</a>
+            <a href="#" class="btn btn-primary">Parier</a>
+        </div>
+        <div class="col-2"></div>
+    </div>
+    <div class="row"><div class="col-12">&nbsp;</div></div>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <h2 id="titleMatches">Les matchs du jour</h2>
+            {% if rencontres is empty %}
+            <p id="msgNoMatchToday">Aucun match aujourd'hui</p>
+            {% else %}
+            <table class="table">
+            {% for rencontre in rencontres %}
+                <tr>
+                    <td>{{ rencontre.heureDebut |date("H:m") }}</td>
+                    <td>{{ rencontre.EquipeA.Nom |e}}</td>
+                    <td><span class="badge rounded-pill bg-info text-dark">{{ rencontre.CoteEquipeA |e}} &mdash; {{ rencontre.CoteEquipeB |e}}</span></td>
+                    <td>{{ rencontre.EquipeB.Nom |e}}</td>
+                </tr>
+            {% endfor %}
+            </table>
+            {% endif %}
+        </div>
+        <div class="col-1"></div>
+    </div>
+</div>
+{% endblock %}

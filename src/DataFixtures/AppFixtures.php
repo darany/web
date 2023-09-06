@@ -69,7 +69,9 @@ class AppFixtures extends Fixture
             'Oakland Raiders', 'Miami Dolphins', 'Baltimore Colts', 'New York Jets', 'Cincinnati Bengals',
             'Atlanta Falcons', 'Carolina Panthers', 'Arizona Cardinals', 'Tennessee Titans', 
             'Buffalo Bills', 'Minnesota Vikings', 'New England Patriots', 'St. Louis Rams',
-            'New York Giants','Los Angeles Raiders','San Diego Chargers'];
+            'New York Giants', 'Los Angeles Raiders', 'San Diego Chargers', 'Old Grumpy Cats',
+            'Fake Team A', 'Fake Team B', 'Fake Team C', 'Fake Team D', 'Fake Team E',
+            'Fake Team F', 'Fake Team G', 'Fake Team H', 'Fake Team I', 'Fake Team J'];
         $equipes = [];  // à remplir pour faire des matches
         foreach ($nomsEquipe as $nomEquipe) {
             $equipe = new Equipe();
@@ -95,12 +97,17 @@ class AppFixtures extends Fixture
         // Créer des rencontres et éventuellement des commentaires
         shuffle($equipes);
         $rencontres = [];  // à remplir pour faire des paris
-        for ($ii=0; $ii<15; $ii++) {
+        for ($ii=0; $ii<21; $ii++) {
             $rencontre = new Rencontre();
             $rencontre->setEquipeA(array_pop($equipes));
             $rencontre->setEquipeB(array_pop($equipes));
             // Une date entre la semaine dernière et dans un mois
             $dateRencontre = $faker->dateTimeBetween('-1 week', '+1 month');
+            // Avoir des rencontres aujourd'hui (à des fins de test IHM)
+            if (str_contains($rencontre->getEquipeA()->getNom(), 'Fake') ||
+                str_contains($rencontre->getEquipeB()->getNom(), 'Fake')) {
+                $dateRencontre = new \DateTime();
+            }
             $dateRencontre->setTime($faker->numberBetween(13, 20), 0);
             $rencontre->setHeureDebut($dateRencontre);
             $heureFin = clone $dateRencontre;
