@@ -50,12 +50,15 @@ class RencontreRepository extends ServiceEntityRepository
             ->getResult();
    }
 
-//    public function findOneBySomeField($value): ?Rencontre
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult();
-//    }
+   /**
+    * @return Rencontre[] Retourne le détail d'un match
+    */
+   public function findRencontreById($id): ?Rencontre
+   {
+       return $this->createQueryBuilder('rencontre')
+           ->andWhere('rencontre.id = :id')
+           ->setParameter('id', $id)
+           ->getQuery()
+           ->getOneOrNullResult();
+   }
 }

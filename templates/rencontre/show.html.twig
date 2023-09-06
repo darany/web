@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Visualiser tous les matchs{% endblock %}
+{% block title %}Détails du match{% endblock %}
 
 {% block body %}
 
@@ -8,7 +8,19 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-12">Work in progress</div>
+        <div class="col-12">
+{{ rencontre.jour }}<br />
+{{ rencontre.heureDebut |date("H:i") }} - {{ rencontre.heureFin |date("H:i") }}<br />
+{{ rencontre.EquipeA.Nom |e }}<br />
+{{ rencontre.CoteEquipeA |e}}<br />
+{{ rencontre.CoteEquipeB |e}}<br />
+{{ rencontre.EquipeB.Nom |e }}<br />
+{{ rencontre.statutString |e }}<br />
+{{ rencontre.displayableScores |e }}<br />
+        
+        
+        
+        </div>
     </div>
 </div>
 {% endblock %}
