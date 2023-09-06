@@ -9,3 +9,5 @@
 import './styles/app.scss';
 
 import { Tooltip, Toast, Popover } from 'bootstrap';
+
+require('bootstrap-icons/font/bootstrap-icons.css');

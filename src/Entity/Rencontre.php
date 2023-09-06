@@ -106,11 +106,29 @@ class Rencontre
         return $this->Statut;
     }
 
+    public function getStatutString(): ?string
+    {
+        $statuses = [
+            self::STATUT_A_VENIR => 'À venir',
+            self::STATUT_EN_COURS => 'En cours',
+            self::STATUT_TERMINE => 'Terminé'
+        ];
+        return $statuses[$this->Statut];
+    }
+
     public function setStatut(int $Statut): static
     {
         $this->Statut = $Statut;
-
         return $this;
+    }
+
+    public function getDisplayableScores(): ?string
+    {
+        if ($this->Statut == self::STATUT_A_VENIR) {
+            return '—';
+        } else {
+            return $this->ScoreEquipeA . ' - ' . $this->ScoreEquipeB;
+        }
     }
 
     public function getScoreEquipeA(): ?int

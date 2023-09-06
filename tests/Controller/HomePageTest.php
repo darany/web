@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class HomePageTest extends WebTestCase
 {
-    public function testSomething(): void
+    public function testHomepage(): void
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/');
