@@ -34,9 +34,8 @@ class AppFixtures extends Fixture
         $visiteurs = [];  // à remplir pour faire des paris
         for ($i = 0; $i < 20; $i++) {
             $user = new User();
-            $username = mb_strtolower(mb_substr($faker->firstName(), 0, 1) . $faker->lastName());
-            $user->setEmail($username . '@example.org');
-            $password = $this->hasher->hashPassword($user, $username);
+            $user->setEmail('user' . $i . '@example.org');
+            $password = $this->hasher->hashPassword($user, 'user' . $i . '@example.org');
             $user->setPassword($password);
             $manager->persist($user);
             array_push($visiteurs, $user);
