@@ -55,6 +55,8 @@ jobs:
           envkey_APP_ENV: prod
           envkey_APP_DEBUG: false
           envkey_APP_SECRET: ${{ secrets.APP_SECRET }}
+          envkey_MESSENGER_TRANSPORT_DSN: doctrine://default?auto_setup=0
+          envkey_CORS_ALLOW_ORIGIN: '^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$'
           file_name: .env
 
       #Setup SSH
@@ -79,7 +81,8 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
           passphrase: ''
           script: |
+            cd ${{ secrets.REMOTE_TARGET_DEPLOY }}
+            php bin/console secrets:generate-keys
             php bin/console doctrine:schema:drop --full-database --force
             php bin/console doctrine:migrations:migrate --no-interaction
             php bin/console doctrine:fixtures:load --no-interaction
-          
