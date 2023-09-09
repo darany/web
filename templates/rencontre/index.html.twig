@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Visualiser tous les matchs{% endblock %}
+
+{% block body %}
+
+{% include 'menu.html.twig' %}
+
+<div class="container-fluid">
+    <div class="row"><div class="col-12">&nbsp;</div></div>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <h2 id="titleMatches">Tous les matchs</h2>
+            {% if rencontres is empty %}
+            <p id="msgNoMatchFound">Oups ! Une erreur est apparue</p>
+            {% else %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Heure début - fin</th>
+                        <th>Equipe A</th>
+                        <th>Cotes équipes A - B</th>
+                        <th>Equipe B</th>
+                        <th>Statut</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for rencontre in rencontres %}
+                    <tr style="cursor:pointer;" data-id="{{ rencontre.id }}" onclick="window.location='{{ path('app_show_rencontre', {id: rencontre.id}) }}';">
+                        <td><i class="bi bi-caret-right-square-fill"></i>&nbsp;{{ rencontre.jour }}</td>
+                        <td>{{ rencontre.heureDebut |date("H:i") }} - {{ rencontre.heureFin |date("H:i") }}</td>
+                        <td>{{ rencontre.EquipeA.Nom |e }}</td>
+                        <td><span class="badge rounded-pill bg-info text-dark">{{ rencontre.CoteEquipeA |e}} &mdash; {{ rencontre.CoteEquipeB |e}}</span></td>
+                        <td>{{ rencontre.EquipeB.Nom |e }}</td>
+                        <td>{{ rencontre.statutString |e }}</td>
+                        <td>{{ rencontre.displayableScores |e }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+        <div class="col-1"></div>
+    </div>
+</div>
+{% endblock %}
