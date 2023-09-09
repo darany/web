@@ -51,24 +51,37 @@ jobs:
       - name: Make production envfile
         uses: SpicyPizza/create-envfile@v2
         with:
-          envkey_DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony
+          envkey_DATABASE_URL: mysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_SERVER }}:${{ secrets.DB_PORT }}/symfony
           envkey_APP_ENV: prod
           envkey_APP_DEBUG: false
           envkey_APP_SECRET: ${{ secrets.APP_SECRET }}
           file_name: .env
 
-      # Copying files and artifacts via SSH to a temporary sync folder
-      - name: Copying files to server
-        uses: appleboy/scp-action@master
+      #Setup SSH
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
         with:
-          host: ${{ secrets.DEPLOY_SSH_HOST }}
-          username: ${{ secrets.DEPLOY_SSH_USER }}
           key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
-          passphrase: ''
-          rm: true
-          source: "./"
-          target: ${{ secrets.REMOTE_TARGET }}
+          name: id_rsa
+          known_hosts: ${{ secrets.KNOWN_HOSTS}}
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H ${{ secrets.DEPLOY_SSH_HOST }} >> ~/.ssh/known_hosts
+
+      # Copying files and artifacts via SSH to a temporary sync folder
+      # - name: Copying files to server
+      #   uses: appleboy/scp-action@master
+      #   with:
+      #     host: ${{ secrets.DEPLOY_SSH_HOST }}
+      #     username: ${{ secrets.DEPLOY_SSH_USER }}
+      #     key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+      #     passphrase: ''
+      #     rm: true
+      #     source: "./"
+      #     target: ${{ secrets.REMOTE_TARGET }}
       
+      - name: Deploy with rsync
+        run: rsync -avz ./dist/ ${{ secrets.DEPLOY_SSH_USER }}@${{ secrets.DEPLOY_SSH_HOST }}:${{ secrets.REMOTE_TARGET_DEPLOY }} --exclude={'var','temp'}
+
       # Run commands on production
       - name: Executing remote ssh commands
         uses: appleboy/ssh-action@master
@@ -78,7 +91,6 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
           passphrase: ''
           script: |
-            rsync -a --exclude={'var','temp'} --delete ${{ secrets.REMOTE_TARGET }} ${{ secrets.REMOTE_TARGET_DEPLOY }}
             composer require --dev symfony/orm-pack
             php bin/console doctrine:schema:drop --full-database --force || echo "Cannot drop the schema"
             php bin/console doctrine:migrations:migrate --no-interaction || echo "No migrations found or migration failed"
