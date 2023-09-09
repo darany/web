@@ -79,7 +79,7 @@ jobs:
       
       # Run commands on production
       - name: Executing remote ssh commands
-        uses: appleboy/ssh-action@v1
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DEPLOY_SSH_HOST }}
           username: ${{ secrets.DEPLOY_SSH_USER }}
