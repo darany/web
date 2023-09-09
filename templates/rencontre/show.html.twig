@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Visualiser tous les matchs{% endblock %}
+{% block title %}Détails du match{% endblock %}
 
 {% block body %}
 
@@ -8,7 +8,119 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-12">Work in progress</div>
+        <div class="col-12">
+        <h1><small class="text-muted">Match</small> {{ rencontre.EquipeA.Nom |e }} &nbsp;
+<span class="badge rounded-pill bg-info text-dark">{{ rencontre.CoteEquipeA |e}} &mdash; {{ rencontre.CoteEquipeB |e}}</span>
+&nbsp;{{ rencontre.EquipeB.Nom |e }} </h1>
+Jour du match : {{ rencontre.jour }}<br />
+Horaire : {{ rencontre.heureDebut |date("H:i") }} - {{ rencontre.heureFin |date("H:i") }}<br />
+Cotes : {{ rencontre.CoteEquipeA |e}} contre {{ rencontre.CoteEquipeB |e}}<br />
+Statut : {{ rencontre.statutString |e }}<br />
+Météo : {{ rencontre.meteo |e }}<br />
+        
+        {% if rencontre.statut == constant('App\\Entity\\Rencontre::STATUT_A_VENIR') %}
+        <a href="#" class="btn btn-primary">Parier</a>
+        {% endif %}
+
+        {% if rencontre.statut != constant('App\\Entity\\Rencontre::STATUT_A_VENIR') %}
+        Score : {{ rencontre.displayableScores |e }}<br />
+
+        <h3>Commentaires</h3>
+        {% if rencontre.EquipeA.joueurs is empty %}
+        <p id="msgNoComments">Aucun commentaire pour le momment.</p>
+        {% else %}
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCommentaires" aria-expanded="false" aria-controls="collapseExample">
+        Voir les commentaires du match
+        </button>
+        <div class="collapse" id="collapseCommentaires">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Commentaire</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for commentaire in rencontre.commentaires %}
+                    {% set difference = rencontre.heureDebut.diff(commentaire.dateHeure) %}
+                    <tr>
+                        <td><i>{{ difference.i }}m</i></td>
+                        <td>{{ commentaire.texte |e }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-5">
+            <h3>Composition équipe {{ rencontre.EquipeA.Nom |e }}</h3>
+            {% if rencontre.EquipeA.joueurs is empty %}
+            <p id="msgNoPlayersTeamA">Aucun joueur n'est encore inscrit sur la feuille de match</p>
+            {% else %}
+            <p>{{ rencontre.EquipeA.joueurs |length }} joueurs sont inscrits sur la feuille de match :</p>
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEquipeA" aria-expanded="false" aria-controls="collapseExample">
+            Voir la liste des joueurs
+            </button>
+            <div class="collapse" id="collapseEquipeA">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Numéro</th>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for joueur in rencontre.EquipeA.joueurs %}
+                        <tr>
+                            <td>{{ joueur.numero |e }}</td>
+                            <td>{{ joueur.nom |e }}</td>
+                            <td>{{ joueur.prenom |e }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-2"></div>
+        <div class="col-5">
+            <h3>Composition équipe {{ rencontre.EquipeB.Nom |e }}</h3>
+            {% if rencontre.EquipeB.joueurs is empty %}
+            <p id="msgNoPlayersTeamA">Aucun joueur n'est encore inscrit sur la feuille de match</p>
+            {% else %}
+            <p>{{ rencontre.EquipeB.joueurs |length }} joueurs sont inscrits sur la feuille de match :</p>
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEquipeB" aria-expanded="false" aria-controls="collapseExample">
+            Voir la liste des joueurs
+            </button>
+            <div class="collapse" id="collapseEquipeB">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Numéro</th>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for joueur in rencontre.EquipeB.joueurs %}
+                        <tr>
+                            <td>{{ joueur.numero |e }}</td>
+                            <td>{{ joueur.nom |e }}</td>
+                            <td>{{ joueur.prenom |e }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+    
+        </div>
     </div>
 </div>
 {% endblock %}

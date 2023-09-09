@@ -20,11 +20,11 @@ class RencontreController extends AbstractController
     }
 
     #[Route('/rencontre/{id}', name: 'app_show_rencontre')]
-    public function show(RencontreRepository $rencontreRepository): Response
+    public function show(RencontreRepository $rencontreRepository, int $id): Response
     {
-        $rencontres = $rencontreRepository->toutesLesRencontres();
+        $rencontre = $rencontreRepository->findRencontreById($id);
         return $this->render('rencontre/show.html.twig', [
-            'rencontres' => $rencontres,
+            'rencontre' => $rencontre,
         ]);
     }
 }
