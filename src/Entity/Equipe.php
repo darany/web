@@ -16,17 +16,17 @@ class Equipe
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Nom = null;
+    private ?string $nom = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $Pays = null;
+    private ?string $pays = null;
 
     #[ORM\OneToMany(mappedBy: 'equipe', targetEntity: Joueur::class)]
-    private Collection $Joueurs;
+    private Collection $joueurs;
 
     public function __construct()
     {
-        $this->Joueurs = new ArrayCollection();
+        $this->joueurs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -36,24 +36,24 @@ class Equipe
 
     public function getNom(): ?string
     {
-        return $this->Nom;
+        return $this->nom;
     }
 
-    public function setNom(string $Nom): static
+    public function setNom(string $nom): static
     {
-        $this->Nom = $Nom;
+        $this->nom = $nom;
 
         return $this;
     }
 
     public function getPays(): ?string
     {
-        return $this->Pays;
+        return $this->pays;
     }
 
-    public function setPays(?string $Pays): static
+    public function setPays(?string $pays): static
     {
-        $this->Pays = $Pays;
+        $this->pays = $pays;
 
         return $this;
     }
@@ -63,13 +63,13 @@ class Equipe
      */
     public function getJoueurs(): Collection
     {
-        return $this->Joueurs;
+        return $this->joueurs;
     }
 
     public function addJoueur(Joueur $joueur): static
     {
-        if (!$this->Joueurs->contains($joueur)) {
-            $this->Joueurs->add($joueur);
+        if (!$this->joueurs->contains($joueur)) {
+            $this->joueurs->add($joueur);
             $joueur->setEquipe($this);
         }
 
@@ -78,7 +78,7 @@ class Equipe
 
     public function removeJoueur(Joueur $joueur): static
     {
-        if ($this->Joueurs->removeElement($joueur)) {
+        if ($this->joueurs->removeElement($joueur)) {
             // set the owning side to null (unless already changed)
             if ($joueur->getEquipe() === $this) {
                 $joueur->setEquipe(null);

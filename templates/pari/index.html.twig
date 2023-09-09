@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Prise de pari{% endblock %}
+
+{% block body %}
+
+{% include 'menu.html.twig' %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1><small class="text-muted">Miser sur le match</small> {{ rencontre.equipeA.Nom |e }} &nbsp;
+            <span class="badge rounded-pill bg-info text-dark">{{ rencontre.coteEquipeA |e}} &mdash; {{ rencontre.coteEquipeB |e}}</span>
+            &nbsp;{{ rencontre.equipeB.Nom |e }}</h1>
+
+            <form>
+            <input name="rencontreId" type="hidden" value="{{ rencontre.id }}" />
+            {% if pari is null %}
+                <div class="row">
+                    <div class="col-2">&nbsp;</div>
+                    <div class="col-6">
+                        <div class="row mb-3">
+                            <div class="form-floating gx-2">
+                                <input name="mise" type="number" placeholder="1.0" step="0.01" min="0" class="form-control" value="0" />
+                                <label for="mise" class="form-label">Mise</label>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="form-floating gx-2">
+                                <select name="equipe" class="form-select" aria-label="Sélectionner une équipe sur laquelle miser">
+                                    <option value="A">{{ rencontre.equipeA.nom |e}}</option>
+                                    <option value="B">{{ rencontre.equipeB.nom |e}}t</option>
+                                </select>
+                                <label for="equipe" class="form-label">Équipe</label>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <input type="submit" value="validation" class="btn btn-primary" />
+                        </div>
+                    </div>
+                    <div class="col-4">&nbsp;</div>
+                </div>
+
+            {% else %}
+
+                <div class="row">
+                    <div class="col-2">&nbsp;</div>
+                    <div class="col-6">
+                        <div class="row mb-3">
+                            <div class="form-floating gx-2">
+                                <input name="mise" type="number" placeholder="1.0" step="0.01" min="0" class="form-control" value="{{ pari.mise }}" />
+                                <label for="mise" class="form-label">Mise</label>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="form-floating gx-2">
+                                <select name="equipe" class="form-select" aria-label="Sélectionner une équipe sur laquelle miser">
+                                    <option value="A">{{ rencontre.equipeA.nom |e}}</option>
+                                    <option value="B">{{ rencontre.equipeB.nom |e}}t</option>
+                                </select>
+                                <label for="equipe" class="form-label">Équipe</label>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <input type="submit" value="actualisation" class="btn btn-primary"/>
+                        </div>
+                    </div>
+                    <div class="col-4">&nbsp;</div>
+                </div>
+            {% endif %}
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

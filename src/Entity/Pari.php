@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\PariRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -15,21 +16,24 @@ class Pari
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $Date = null;
+    private ?\DateTimeInterface $date = null;
 
     #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Rencontre $Rencontre = null;
+    private ?Rencontre $rencontre = null;
 
     #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Equipe $Equipe = null;
+    private ?Equipe $equipe = null;
 
     #[ORM\Column]
-    private ?float $Mise = null;
+    #[Assert\PositiveOrZero]
+    #[Assert\Type('float')]
+    private ?float $mise = null;
 
     #[ORM\Column(nullable: true)]
-    private ?float $Gain = null;
+    #[Assert\Type('float')]
+    private ?float $gain = null;
 
     #[ORM\ManyToOne(inversedBy: 'paris')]
     #[ORM\JoinColumn(nullable: false)]
@@ -42,60 +46,60 @@ class Pari
 
     public function getDate(): ?\DateTimeInterface
     {
-        return $this->Date;
+        return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $Date): static
+    public function setDate(\DateTimeInterface $date): static
     {
-        $this->Date = $Date;
+        $this->date = $date;
 
         return $this;
     }
 
     public function getRencontre(): ?Rencontre
     {
-        return $this->Rencontre;
+        return $this->rencontre;
     }
 
-    public function setRencontre(Rencontre $Rencontre): static
+    public function setRencontre(Rencontre $rencontre): static
     {
-        $this->Rencontre = $Rencontre;
+        $this->rencontre = $rencontre;
 
         return $this;
     }
 
     public function getEquipe(): ?Equipe
     {
-        return $this->Equipe;
+        return $this->equipe;
     }
 
-    public function setEquipe(Equipe $Equipe): static
+    public function setEquipe(Equipe $equipe): static
     {
-        $this->Equipe = $Equipe;
+        $this->equipe = $equipe;
 
         return $this;
     }
 
     public function getMise(): ?float
     {
-        return $this->Mise;
+        return $this->mise;
     }
 
-    public function setMise(float $Mise): static
+    public function setMise(float $mise): static
     {
-        $this->Mise = $Mise;
+        $this->mise = $mise;
 
         return $this;
     }
 
     public function getGain(): ?float
     {
-        return $this->Gain;
+        return $this->gain;
     }
 
-    public function setGain(?float $Gain): static
+    public function setGain(?float $gain): static
     {
-        $this->Gain = $Gain;
+        $this->gain = $gain;
 
         return $this;
     }

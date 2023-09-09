@@ -75,8 +75,8 @@
         <div class="col-2"></div>
         <div class="col-8 center-block">
             <h1 class="">Bienvenue sur l'application superbowl</h1>
-            <a href="#" class="btn btn-primary">Se connecter</a>
-            <a href="rencontre" class="btn btn-primary">Visualiser tous les matchs</a>
+            <a href="{{ path('app_login') }}" class="btn btn-primary">Se connecter</a>
+            <a href="{{ path('app_rencontre') }}" class="btn btn-primary">Visualiser tous les matchs</a>
             <a href="#" class="btn btn-primary">Parier</a>
         </div>
         <div class="col-2"></div>
@@ -91,7 +91,7 @@
             {% else %}
             <table class="table">
             {% for rencontre in rencontres %}
-                <tr>
+                <tr style="cursor:pointer;" data-id="{{ rencontre.id }}" onclick="window.location='{{ path('app_show_rencontre', {id: rencontre.id}) }}';">
                     <td>{{ rencontre.heureDebut |date("H:i") }}</td>
                     <td>{{ rencontre.EquipeA.Nom |e}}</td>
                     <td><span class="badge rounded-pill bg-info text-dark">{{ rencontre.CoteEquipeA |e}} &mdash; {{ rencontre.CoteEquipeB |e}}</span></td>

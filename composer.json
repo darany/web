@@ -9,6 +9,7 @@
         "ext-iconv": "*",
         "api-platform/core": "^3.1",
         "doctrine/doctrine-bundle": "^2.10",
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.16",
         "lexik/jwt-authentication-bundle": "^2.19",
@@ -94,7 +95,6 @@
         }
     },
     "require-dev": {
-        "doctrine/doctrine-fixtures-bundle": "^3.4",
         "fakerphp/faker": "^1.23",
         "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^9.5",
