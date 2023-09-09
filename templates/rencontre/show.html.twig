@@ -16,10 +16,99 @@
 {{ rencontre.CoteEquipeB |e}}<br />
 {{ rencontre.EquipeB.Nom |e }}<br />
 {{ rencontre.statutString |e }}<br />
-{{ rencontre.displayableScores |e }}<br />
+Score : {{ rencontre.displayableScores |e }}<br />
+Météo : {{ rencontre.meteo |e }}<br />
         
-        
-        
+212
+
+{% if rencontre.statut == constant('App\\Entity\\Rencontre::STATUT_A_VENIR') %}
+<a href="#" class="btn btn-primary">Parier</a>
+{% endif %}
+
+{% if rencontre.statut != constant('App\\Entity\\Rencontre::STATUT_A_VENIR') %}
+Commentaires:
+{% if rencontre.EquipeA.joueurs is empty %}
+<p id="msgNoComments">Aucun commentaire pour le momment.</p>
+{% else %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Commentaire</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for commentaire in rencontre.commentaires %}
+        <tr>
+            <td>{{ commentaire.dateHeure |date("H:i") }}</td>
+            <td>{{ commentaire.texte |e }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% endif %}
+
+
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-5">
+            <h3>Equipe {{ rencontre.EquipeA.Nom |e }}</h3>
+            {% if rencontre.EquipeA.joueurs is empty %}
+            <p id="msgNoPlayersTeamA">Aucun joueur n'est encore inscrit sur la feuille de match</p>
+            {% else %}
+            <p>{{ rencontre.EquipeA.joueurs |length }} joueurs sont inscrits sur la feuille de match :</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Numéro</th>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for joueur in rencontre.EquipeA.joueurs %}
+                    <tr>
+                        <td>{{ joueur.numero |e }}</td>
+                        <td>{{ joueur.nom |e }}</td>
+                        <td>{{ joueur.prenom |e }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+        <div class="col-2"></div>
+        <div class="col-5">
+            <h3>Equipe {{ rencontre.EquipeB.Nom |e }}</h3>
+            {% if rencontre.EquipeB.joueurs is empty %}
+            <p id="msgNoPlayersTeamA">Aucun joueur n'est encore inscrit sur la feuille de match</p>
+            {% else %}
+            <p>{{ rencontre.EquipeB.joueurs |length }} joueurs sont inscrits sur la feuille de match :</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Numéro</th>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for joueur in rencontre.EquipeB.joueurs %}
+                    <tr>
+                        <td>{{ joueur.numero |e }}</td>
+                        <td>{{ joueur.nom |e }}</td>
+                        <td>{{ joueur.prenom |e }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+    
         </div>
     </div>
 </div>
