@@ -51,7 +51,7 @@ jobs:
       - name: Make production envfile
         uses: SpicyPizza/create-envfile@v2
         with:
-          envkey_DATABASE_URL: mysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_SERVER }}:${{ secrets.DB_PORT }}/symfony
+          envkey_DATABASE_URL: mysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_SERVER }}:${{ secrets.DB_PORT }}/${{ secrets.DB_NAME }}
           envkey_APP_ENV: prod
           envkey_APP_DEBUG: false
           envkey_APP_SECRET: ${{ secrets.APP_SECRET }}
@@ -82,3 +82,4 @@ jobs:
             php bin/console doctrine:schema:drop --full-database --force
             php bin/console doctrine:migrations:migrate --no-interaction
             php bin/console doctrine:fixtures:load --no-interaction
+          
