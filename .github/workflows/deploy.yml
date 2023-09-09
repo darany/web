@@ -85,4 +85,5 @@ jobs:
             php bin/console secrets:generate-keys
             php bin/console doctrine:schema:drop --full-database --force
             php bin/console doctrine:migrations:migrate --no-interaction
+            composer require --dev symfony/orm-pack
             php bin/console doctrine:fixtures:load --no-interaction
