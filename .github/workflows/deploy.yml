@@ -70,7 +70,7 @@ jobs:
         run: ssh-keyscan -H ${{ secrets.DEPLOY_SSH_HOST }} >> ~/.ssh/known_hosts
       
       - name: Deploy with rsync
-        run: rsync -avz . ${{ secrets.DEPLOY_SSH_USER }}@${{ secrets.DEPLOY_SSH_HOST }}:${{ secrets.REMOTE_TARGET_DEPLOY }} --exclude={'var','temp', 'node_modules'}
+        run: rsync -avz . ${{ secrets.DEPLOY_SSH_USER }}@${{ secrets.DEPLOY_SSH_HOST }}:${{ secrets.REMOTE_TARGET_DEPLOY }} --exclude={'var','temp','node_modules'}
 
       # Run commands on production
       - name: Executing remote ssh commands
