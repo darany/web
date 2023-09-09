@@ -80,7 +80,7 @@ jobs:
       #     target: ${{ secrets.REMOTE_TARGET }}
       
       - name: Deploy with rsync
-        run: rsync -avz ./dist/ ${{ secrets.DEPLOY_SSH_USER }}@${{ secrets.DEPLOY_SSH_HOST }}:${{ secrets.REMOTE_TARGET_DEPLOY }} --exclude={'var','temp'}
+        run: rsync -avz . ${{ secrets.DEPLOY_SSH_USER }}@${{ secrets.DEPLOY_SSH_HOST }}:${{ secrets.REMOTE_TARGET_DEPLOY }} --exclude={'var','temp'}
 
       # Run commands on production
       - name: Executing remote ssh commands
