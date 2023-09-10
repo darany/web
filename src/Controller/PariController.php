@@ -8,6 +8,7 @@ use App\Repository\EquipeRepository;
 use App\Entity\Pari;
 use App\Entity\Rencontre;
 use App\Form\PariType;
+use App\Form\PariMultipleType;
 
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
@@ -70,5 +71,32 @@ class PariController extends AbstractController
                 'pari' => $pari,
             ]);
         }
+    }
+
+    #[Route('/pari/rencontres', name: 'app_pari_rencontres')]
+    public function rencontres(Request $request, EntityManagerInterface $entityManager,
+             PariRepository $pariRepository, RencontreRepository $rencontreRepository, 
+             EquipeRepository $equipeRepository): Response
+    {
+        //On doit être authentifié pour parier
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+        
+        $form = $this->createForm(PariMultipleType::class);
+        $form->handleRequest($request);
+        // && $form->isValid()
+        if ($form->isSubmitted()) {
+            dd($form);
+            $pariForm = $form->getData();
+            
+
+        } else {
+            $rencontres = $rencontreRepository->toutesLesRencontres();
+            return $this->render('pari/rencontres.html.twig', [
+                'form' => $form,
+                'rencontres' => $rencontres,
+            ]);
+        }
+        
     }
 }

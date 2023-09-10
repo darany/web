@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Parier sur plusieurs matchs{% endblock %}
+
+{% block body %}
+
+{% include 'menu.html.twig' %}
+
+<div class="container-fluid">
+    <div class="row"><div class="col-12">&nbsp;</div></div>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <h2 id="titleMatches">Pari multiple</h2>
+            {% if rencontres is empty %}
+            <p id="msgNoMatchFound">Oups ! Une erreur est apparue</p>
+            {% else %}
+            {{ form_start(form) }}
+            <div class="my-custom-class-for-errors">
+                {{ form_errors(form) }}
+            </div>
+            {{form_widget(form._token)}}
+            <p>Sélectionner toutes les rencontres sur lesquelles vous souhaitez parier la même mise.</p>
+            <div class="form-floating gx-2">
+                <input name="{{ field_name(form.mise) }}" type="number" placeholder="1.0" step="0.01" min="0" class="form-control" value="0" />
+                <label for="{{ field_name(form.mise) }}" class="form-label">Mise</label>
+            </div>
+            <input type="submit" value="valider" class="btn btn-primary" />
+            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Heure début - fin</th>
+                        <th>Equipe A</th>
+                        <th>Cotes équipes A - B</th>
+                        <th>Equipe B</th>
+                        <th>Statut</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for rencontre in rencontres %}
+                    <tr>
+                        <td>{{ rencontre.jour }}</td>
+                        <td>{{ rencontre.heureDebut |date("H:i") }} - {{ rencontre.heureFin |date("H:i") }}</td>
+                        <td><input class="form-check-input" type="checkbox" name="pari_multiple[equipes][]" value="{{ rencontre.equipeA.id }}" />&nbsp;{{ rencontre.equipeA.Nom |e }}</td>
+                        <td><span class="badge rounded-pill bg-info text-dark">{{ rencontre.CoteEquipeA |e}} &mdash; {{ rencontre.CoteEquipeB |e}}</span></td>
+                        <td><input class="form-check-input" type="checkbox" name="pari_multiple[equipes][]" value="{{ rencontre.equipeB.id }}" />&nbsp;{{ rencontre.equipeB.Nom |e }}</td>
+                        <td>{{ rencontre.statutString |e }}</td>
+                        <td>{{ rencontre.displayableScores |e }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {{ form_end(form) }}
+            {% endif %}
+        </div>
+        <div class="col-1"></div>
+    </div>
+</div>
+{% endblock %}
