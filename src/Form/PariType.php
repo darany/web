@@ -2,29 +2,18 @@
 
 namespace App\Form;
 
-use App\Entity\Pari;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PariType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('date')
-            ->add('mise')
-            ->add('gain')
-            ->add('rencontre')
-            ->add('equipe')
-            ->add('user')
-        ;
-    }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => Pari::class,
-        ]);
+            ->add('equipe', IntegerType::class)
+            ->add('mise', NumberType::class, ['empty_data' => '0.0']);
     }
 }

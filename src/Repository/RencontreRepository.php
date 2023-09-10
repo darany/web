@@ -51,7 +51,7 @@ class RencontreRepository extends ServiceEntityRepository
    }
 
    /**
-    * @return Rencontre[] Retourne le détail d'un match
+    * @return Rencontre Retourne le détail d'un match
     */
    public function findRencontreById($id): ?Rencontre
    {

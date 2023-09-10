@@ -9,66 +9,49 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <h1><small class="text-muted">Miser sur le match</small> {{ rencontre.equipeA.Nom |e }} &nbsp;
-            <span class="badge rounded-pill bg-info text-dark">{{ rencontre.coteEquipeA |e}} &mdash; {{ rencontre.coteEquipeB |e}}</span>
-            &nbsp;{{ rencontre.equipeB.Nom |e }}</h1>
+            <h1><small class="text-muted">Miser sur le match</small> {{ pari.rencontre.equipeA.Nom |e }} &nbsp;
+            <span class="badge rounded-pill bg-info text-dark">{{ pari.rencontre.coteEquipeA |e}} &mdash; {{ pari.rencontre.coteEquipeB |e}}</span>
+            &nbsp;{{ pari.rencontre.equipeB.Nom |e }}</h1>
 
-            <form>
-            <input name="rencontreId" type="hidden" value="{{ rencontre.id }}" />
-            {% if pari is null %}
-                <div class="row">
-                    <div class="col-2">&nbsp;</div>
-                    <div class="col-6">
-                        <div class="row mb-3">
-                            <div class="form-floating gx-2">
-                                <input name="mise" type="number" placeholder="1.0" step="0.01" min="0" class="form-control" value="0" />
-                                <label for="mise" class="form-label">Mise</label>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="form-floating gx-2">
-                                <select name="equipe" class="form-select" aria-label="Sélectionner une équipe sur laquelle miser">
-                                    <option value="A">{{ rencontre.equipeA.nom |e}}</option>
-                                    <option value="B">{{ rencontre.equipeB.nom |e}}t</option>
-                                </select>
-                                <label for="equipe" class="form-label">Équipe</label>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <input type="submit" value="validation" class="btn btn-primary" />
-                        </div>
-                    </div>
-                    <div class="col-4">&nbsp;</div>
-                </div>
-
+            {% if pari.equipe is null %}
+                {% set submitName = 'validation' %}
+                {% set pariEquipe = pari.rencontre.equipeA.id %}
             {% else %}
+                {% set submitName = 'actualisation' %}
+                {% set pariEquipe = pari.equipe.id %}
+            {% endif %}
 
+            {{ form_start(form) }}
+                <div class="my-custom-class-for-errors">
+                    {{ form_errors(form) }}
+                </div>
+                {{form_widget(form._token)}}
                 <div class="row">
                     <div class="col-2">&nbsp;</div>
                     <div class="col-6">
                         <div class="row mb-3">
                             <div class="form-floating gx-2">
-                                <input name="mise" type="number" placeholder="1.0" step="0.01" min="0" class="form-control" value="{{ pari.mise }}" />
-                                <label for="mise" class="form-label">Mise</label>
+                                <input name="{{ field_name(form.mise) }}" type="number" placeholder="1.0" step="0.01" min="0" class="form-control" value="{{ pari.mise }}" />
+                                <label for="{{ field_name(form.mise) }}" class="form-label">Mise</label>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="form-floating gx-2">
-                                <select name="equipe" class="form-select" aria-label="Sélectionner une équipe sur laquelle miser">
-                                    <option value="A">{{ rencontre.equipeA.nom |e}}</option>
-                                    <option value="B">{{ rencontre.equipeB.nom |e}}t</option>
+                                <select name="{{ field_name(form.equipe) }}" class="form-select" aria-label="Sélectionner une équipe sur laquelle miser">
+                                    <option value="{{ pari.rencontre.equipeA.id}}" {{ pariEquipe == pari.rencontre.equipeA.id ? 'selected' : '' }}>{{ pari.rencontre.equipeA.nom |e}}</option>
+                                    <option value="{{ pari.rencontre.equipeB.id}}" {{ pariEquipe == pari.rencontre.equipeB.id ? 'selected' : '' }}>{{ pari.rencontre.equipeB.nom |e}}t</option>
                                 </select>
-                                <label for="equipe" class="form-label">Équipe</label>
+                                <label for="{{ field_name(form.equipe) }}" class="form-label">Équipe</label>
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <input type="submit" value="actualisation" class="btn btn-primary"/>
+                            <input type="submit" value="{{ submitName }}" class="btn btn-primary" />
                         </div>
                     </div>
                     <div class="col-4">&nbsp;</div>
                 </div>
-            {% endif %}
-            </form>
+
+            {{ form_end(form) }}
         </div>
     </div>
 

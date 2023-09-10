@@ -21,7 +21,7 @@
             Météo : {{ rencontre.meteo |e }}<br />
             
             {% if rencontre.statut == constant('App\\Entity\\Rencontre::STATUT_A_VENIR') %}
-            <a href="{{ path('app_pari_rencontre', {rencontreId: rencontre.id}) }}" class="btn btn-primary">Miser</a>
+            <a href="{{ path('app_pari_rencontre', {id: rencontre.id}) }}" class="btn btn-primary">Miser</a>
             {% else %}
 
             Score : {{ rencontre.displayableScores |e }}<br />

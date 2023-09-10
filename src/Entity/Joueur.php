@@ -23,8 +23,13 @@ class Joueur
     #[ORM\Column(length: 255)]
     private ?string $prenom = null;
 
-    #[ORM\ManyToOne(inversedBy: 'Joueurs')]
+    #[ORM\ManyToOne(inversedBy: 'joueurs')]
     private ?Equipe $equipe = null;
+
+    public function __toString(): string
+    {
+        return $this->prenom . ' ' . $this->nom;
+    }
 
     public function getId(): ?int
     {

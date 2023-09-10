@@ -18,11 +18,11 @@ class Pari
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'paris')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Rencontre $rencontre = null;
 
-    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne()]
     #[ORM\JoinColumn(nullable: false)]
     private ?Equipe $equipe = null;
 

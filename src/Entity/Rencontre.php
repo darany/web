@@ -58,7 +58,7 @@ class Rencontre
     #[ORM\OneToMany(mappedBy: 'rencontre', targetEntity: Commentaire::class, orphanRemoval: true)]
     private Collection $commentaires;
 
-    #[ORM\OneToMany(mappedBy: 'pari', targetEntity: Pari::class, orphanRemoval: false)]
+    #[ORM\OneToMany(mappedBy: 'rencontre', targetEntity: Pari::class, orphanRemoval: false)]
     private Collection $paris;
 
     public function __construct()
