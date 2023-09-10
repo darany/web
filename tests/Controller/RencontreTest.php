@@ -35,8 +35,6 @@ class RencontreTest extends WebTestCase
         //Contenu attendu
         $this->assertResponseIsSuccessful();
         $this->assertPageTitleContains("Détails du match");
-        // $this->assertSelectorNotExists('p[id=msgNoMatchFound]');
-        // $this->assertSelectorTextContains('h2[id=titleMatches]', 'Tous les matchs');
     }
 
 }

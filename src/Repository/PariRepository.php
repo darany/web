@@ -21,28 +21,17 @@ class PariRepository extends ServiceEntityRepository
         parent::__construct($registry, Pari::class);
     }
 
-//    /**
-//     * @return Pari[] Returns an array of Pari objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Pari
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+   public function findOneByRencontreIdAndUserId($rencontreId, $userId): ?Pari
+   {
+       return $this->createQueryBuilder('pari')
+           ->join('pari.rencontre', 'rencontre')
+           ->join('pari.user', 'user')
+           ->andWhere('rencontre.id = :rencontre_id')
+           ->andWhere('user.id = :user_id')
+           ->setParameter('rencontre_id', $rencontreId)
+           ->setParameter('user_id', $userId)
+           ->getQuery()
+           ->getOneOrNullResult()
+       ;
+   }
 }

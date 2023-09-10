@@ -17,18 +17,18 @@ class Commentaire
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $DateHeure = null;
+    private ?\DateTimeInterface $dateHeure = null;
 
     #[ORM\Column(length: 1024)]
-    private ?string $Texte = null;
+    private ?string $texte = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $Commentateur = null;
+    private ?User $commentateur = null;
 
     #[ORM\ManyToOne(inversedBy: 'commentaires')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Rencontre $Rencontre = null;
+    private ?Rencontre $rencontre = null;
 
     public function getId(): ?int
     {
@@ -37,49 +37,46 @@ class Commentaire
 
     public function getDateHeure(): ?\DateTimeInterface
     {
-        return $this->DateHeure;
+        return $this->dateHeure;
     }
 
-    public function setDateHeure(\DateTimeInterface $DateHeure): static
+    public function setDateHeure(\DateTimeInterface $dateHeure): static
     {
-        $this->DateHeure = $DateHeure;
-
+        $this->dateHeure = $dateHeure;
         return $this;
     }
 
     public function getTexte(): ?string
     {
-        return $this->Texte;
+        return $this->texte;
     }
 
-    public function setTexte(string $Texte): static
+    public function setTexte(string $texte): static
     {
-        $this->Texte = $Texte;
+        $this->texte = $texte;
 
         return $this;
     }
 
     public function getCommentateur(): ?User
     {
-        return $this->Commentateur;
+        return $this->commentateur;
     }
 
-    public function setCommentateur(?User $Commentateur): static
+    public function setCommentateur(?User $commentateur): static
     {
-        $this->Commentateur = $Commentateur;
-
+        $this->commentateur = $commentateur;
         return $this;
     }
 
     public function getRencontre(): ?Rencontre
     {
-        return $this->Rencontre;
+        return $this->rencontre;
     }
 
-    public function setRencontre(?Rencontre $Rencontre): static
+    public function setRencontre(?Rencontre $rencontre): static
     {
-        $this->Rencontre = $Rencontre;
-
+        $this->rencontre = $rencontre;
         return $this;
     }
 }
