@@ -147,7 +147,7 @@ class AppFixtures extends Fixture
                 $pari = new Pari();
                 $pari->setDate($faker->dateTimeBetween('-1 week', '+1 month'));
                 $pari->setMise($faker->biasedNumberBetween(10, 2000, function($x) { return 1 - sqrt($x); }));
-                $pari->setUser($faker->randomElement($visiteurs));
+                $pari->setUser($visiteurs[$jj]);    //Afin d'éviter qu'un visiteur n'ait deux mises en cours sur le même match
                 $pari->setEquipe($faker->randomElement([$rencontre->getEquipeA(), $rencontre->getEquipeB()]));
                 $pari->setRencontre($rencontre);
                 $pari->setGain($this->gestionPari->calculerGain($pari));
