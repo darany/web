@@ -1,0 +1,88 @@
+# GitHub Action for Symfony with MySQL
+name: Deploy the application
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+          tools: composer:v2
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, dom, filter, gd, iconv, json, mbstring, pdo
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          # Use composer.json for key, if composer.lock is not committed.
+          # key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+           node-version: ${{ matrix.node-version }}
+           cache: 'npm'
+        
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build the frontend
+        run: npm run build
+
+      # Prepare .env file for production
+      - name: Make production envfile
+        uses: SpicyPizza/create-envfile@v2
+        with:
+          envkey_DATABASE_URL: mysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_SERVER }}:${{ secrets.DB_PORT }}/${{ secrets.DB_NAME }}
+          envkey_APP_ENV: prod
+          envkey_APP_DEBUG: false
+          envkey_APP_SECRET: ${{ secrets.APP_SECRET }}
+          envkey_MESSENGER_TRANSPORT_DSN: doctrine://default?auto_setup=0
+          envkey_CORS_ALLOW_ORIGIN: '^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$'
+          file_name: .env
+
+      #Setup SSH
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+          name: id_rsa
+          known_hosts: ${{ secrets.KNOWN_HOSTS}}
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H ${{ secrets.DEPLOY_SSH_HOST }} >> ~/.ssh/known_hosts
+      
+      - name: Deploy with rsync
+        run: rsync -avz . ${{ secrets.DEPLOY_SSH_USER }}@${{ secrets.DEPLOY_SSH_HOST }}:${{ secrets.REMOTE_TARGET_DEPLOY }} --exclude={'var','temp','node_modules','.git','.github','tests'}
+
+      # Run commands on production
+      - name: Executing remote ssh commands
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_SSH_HOST }}
+          username: ${{ secrets.DEPLOY_SSH_USER }}
+          key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+          passphrase: ''
+          script: |
+            cd ${{ secrets.REMOTE_TARGET_DEPLOY }}
+            php bin/console secrets:generate-keys
+            php bin/console doctrine:schema:drop --full-database --force
+            php bin/console doctrine:migrations:migrate --no-interaction
+            php bin/console doctrine:fixtures:load --no-interaction

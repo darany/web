@@ -24,41 +24,41 @@ class Rencontre
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $HeureDebut = null;
+    private ?\DateTimeInterface $heureDebut = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $HeureFin = null;
+    private ?\DateTimeInterface $heureFin = null;
 
     #[ORM\Column]
-    private ?int $Statut = null;
+    private ?int $statut = null;
 
     #[ORM\Column]
-    private ?int $ScoreEquipeA = null;
+    private ?int $scoreEquipeA = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $ScoreEquipeB = null;
+    private ?int $scoreEquipeB = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $Meteo = null;
+    private ?string $meteo = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Equipe $EquipeA = null;
+    private ?Equipe $equipeA = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Equipe $EquipeB = null;
+    private ?Equipe $equipeB = null;
 
     #[ORM\Column]
-    private ?float $CoteEquipeA = null;
+    private ?float $coteEquipeA = null;
 
     #[ORM\Column]
-    private ?float $CoteEquipeB = null;
+    private ?float $coteEquipeB = null;
 
-    #[ORM\OneToMany(mappedBy: 'Rencontre', targetEntity: Commentaire::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'rencontre', targetEntity: Commentaire::class, orphanRemoval: true)]
     private Collection $commentaires;
 
-    #[ORM\OneToMany(mappedBy: 'Pari', targetEntity: Pari::class, orphanRemoval: false)]
+    #[ORM\OneToMany(mappedBy: 'rencontre', targetEntity: Pari::class, orphanRemoval: false)]
     private Collection $paris;
 
     public function __construct()
@@ -74,36 +74,36 @@ class Rencontre
     public function getJour(): ?string
     {
         $formatter = new \IntlDateFormatter('fr_FR', \IntlDateFormatter::LONG, \IntlDateFormatter::NONE);
-        return $formatter->format($this->HeureDebut);
+        return $formatter->format($this->heureDebut);
     }
 
     public function getHeureDebut(): ?\DateTimeInterface
     {
-        return $this->HeureDebut;
+        return $this->heureDebut;
     }
 
-    public function setHeureDebut(\DateTimeInterface $HeureDebut): static
+    public function setHeureDebut(\DateTimeInterface $heureDebut): static
     {
-        $this->HeureDebut = $HeureDebut;
+        $this->heureDebut = $heureDebut;
 
         return $this;
     }
 
     public function getHeureFin(): ?\DateTimeInterface
     {
-        return $this->HeureFin;
+        return $this->heureFin;
     }
 
-    public function setHeureFin(\DateTimeInterface $HeureFin): static
+    public function setHeureFin(\DateTimeInterface $heureFin): static
     {
-        $this->HeureFin = $HeureFin;
+        $this->heureFin = $heureFin;
 
         return $this;
     }
 
     public function getStatut(): ?int
     {
-        return $this->Statut;
+        return $this->statut;
     }
 
     public function getStatutString(): ?string
@@ -113,104 +113,104 @@ class Rencontre
             self::STATUT_EN_COURS => 'En cours',
             self::STATUT_TERMINE => 'Terminé'
         ];
-        return $statuses[$this->Statut];
+        return $statuses[$this->statut];
     }
 
-    public function setStatut(int $Statut): static
+    public function setStatut(int $statut): static
     {
-        $this->Statut = $Statut;
+        $this->statut = $statut;
         return $this;
     }
 
     public function getDisplayableScores(): ?string
     {
-        if ($this->Statut == self::STATUT_A_VENIR) {
+        if ($this->statut == self::STATUT_A_VENIR) {
             return '—';
         } else {
-            return $this->ScoreEquipeA . ' - ' . $this->ScoreEquipeB;
+            return $this->scoreEquipeA . ' - ' . $this->scoreEquipeB;
         }
     }
 
     public function getScoreEquipeA(): ?int
     {
-        return $this->ScoreEquipeA;
+        return $this->scoreEquipeA;
     }
 
-    public function setScoreEquipeA(int $ScoreEquipeA): static
+    public function setScoreEquipeA(int $scoreEquipeA): static
     {
-        $this->ScoreEquipeA = $ScoreEquipeA;
+        $this->scoreEquipeA = $scoreEquipeA;
 
         return $this;
     }
 
     public function getScoreEquipeB(): ?int
     {
-        return $this->ScoreEquipeB;
+        return $this->scoreEquipeB;
     }
 
-    public function setScoreEquipeB(?int $ScoreEquipeB): static
+    public function setScoreEquipeB(?int $scoreEquipeB): static
     {
-        $this->ScoreEquipeB = $ScoreEquipeB;
+        $this->scoreEquipeB = $scoreEquipeB;
 
         return $this;
     }
 
     public function getMeteo(): ?string
     {
-        return $this->Meteo;
+        return $this->meteo;
     }
 
-    public function setMeteo(?string $Meteo): static
+    public function setMeteo(?string $meteo): static
     {
-        $this->Meteo = $Meteo;
+        $this->meteo = $meteo;
 
         return $this;
     }
 
     public function getEquipeA(): ?Equipe
     {
-        return $this->EquipeA;
+        return $this->equipeA;
     }
 
-    public function setEquipeA(Equipe $EquipeA): static
+    public function setEquipeA(Equipe $equipeA): static
     {
-        $this->EquipeA = $EquipeA;
+        $this->equipeA = $equipeA;
 
         return $this;
     }
 
     public function getEquipeB(): ?Equipe
     {
-        return $this->EquipeB;
+        return $this->equipeB;
     }
 
-    public function setEquipeB(Equipe $EquipeB): static
+    public function setEquipeB(Equipe $equipeB): static
     {
-        $this->EquipeB = $EquipeB;
+        $this->equipeB = $equipeB;
 
         return $this;
     }
 
     public function getCoteEquipeA(): ?float
     {
-        return $this->CoteEquipeA;
+        return $this->coteEquipeA;
     }
 
-    public function setCoteEquipeA(float $CoteEquipeA): static
+    public function setCoteEquipeA(float $coteEquipeA): static
     {
-        $this->CoteEquipeA = $CoteEquipeA;
+        $this->coteEquipeA = $coteEquipeA;
 
         return $this;
     }
 
     public function getCoteEquipeB(): ?float
     {
-        return $this->CoteEquipeB;
+        return $this->coteEquipeB;
     }
 
-    public function setCoteEquipeB(float $CoteEquipeB): static
+    public function setCoteEquipeB(float $coteEquipeB): static
     {
-        $this->CoteEquipeB = $CoteEquipeB;
+        $this->coteEquipeB = $coteEquipeB;
 
         return $this;
     }

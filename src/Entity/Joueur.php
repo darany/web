@@ -15,16 +15,21 @@ class Joueur
     private ?int $id = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
-    private ?int $Numero = null;
+    private ?int $numero = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Nom = null;
+    private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Prenom = null;
+    private ?string $prenom = null;
 
-    #[ORM\ManyToOne(inversedBy: 'Joueurs')]
+    #[ORM\ManyToOne(inversedBy: 'joueurs')]
     private ?Equipe $equipe = null;
+
+    public function __toString(): string
+    {
+        return $this->prenom . ' ' . $this->nom;
+    }
 
     public function getId(): ?int
     {
@@ -33,36 +38,36 @@ class Joueur
 
     public function getNumero(): ?int
     {
-        return $this->Numero;
+        return $this->numero;
     }
 
-    public function setNumero(int $Numero): static
+    public function setNumero(int $numero): static
     {
-        $this->Numero = $Numero;
+        $this->numero = $numero;
 
         return $this;
     }
 
     public function getNom(): ?string
     {
-        return $this->Nom;
+        return $this->nom;
     }
 
-    public function setNom(string $Nom): static
+    public function setNom(string $nom): static
     {
-        $this->Nom = $Nom;
+        $this->nom = $nom;
 
         return $this;
     }
 
     public function getPrenom(): ?string
     {
-        return $this->Prenom;
+        return $this->prenom;
     }
 
-    public function setPrenom(string $Prenom): static
+    public function setPrenom(string $prenom): static
     {
-        $this->Prenom = $Prenom;
+        $this->prenom = $prenom;
 
         return $this;
     }

@@ -28,12 +28,12 @@ class RencontreRepository extends ServiceEntityRepository
    {
         $dateTime = new \DateTime();
         return $this->createQueryBuilder('rencontre')
-           ->andWhere('rencontre.HeureDebut BETWEEN :dateMin AND :dateMax')
+           ->andWhere('rencontre.heureDebut BETWEEN :dateMin AND :dateMax')
            ->setParameters([
                  'dateMin' => $dateTime->format('Y-m-d 00:00:00'),
                  'dateMax' => $dateTime->format('Y-m-d 23:59:59')
             ])
-           ->orderBy('rencontre.HeureDebut', 'ASC')
+           ->orderBy('rencontre.heureDebut', 'ASC')
            ->getQuery()
            ->getResult();
    }
@@ -45,13 +45,13 @@ class RencontreRepository extends ServiceEntityRepository
    public function toutesLesRencontres(): array
    {
         return $this->createQueryBuilder('rencontre')
-            ->orderBy('rencontre.HeureDebut', 'ASC')
+            ->orderBy('rencontre.heureDebut', 'ASC')
             ->getQuery()
             ->getResult();
    }
 
    /**
-    * @return Rencontre[] Retourne le détail d'un match
+    * @return Rencontre Retourne le détail d'un match
     */
    public function findRencontreById($id): ?Rencontre
    {

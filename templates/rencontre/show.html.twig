@@ -9,24 +9,26 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-        <h1><small class="text-muted">Match</small> {{ rencontre.EquipeA.Nom |e }} &nbsp;
-<span class="badge rounded-pill bg-info text-dark">{{ rencontre.CoteEquipeA |e}} &mdash; {{ rencontre.CoteEquipeB |e}}</span>
-&nbsp;{{ rencontre.EquipeB.Nom |e }} </h1>
-Jour du match : {{ rencontre.jour }}<br />
-Horaire : {{ rencontre.heureDebut |date("H:i") }} - {{ rencontre.heureFin |date("H:i") }}<br />
-Cotes : {{ rencontre.CoteEquipeA |e}} contre {{ rencontre.CoteEquipeB |e}}<br />
-Statut : {{ rencontre.statutString |e }}<br />
-Météo : {{ rencontre.meteo |e }}<br />
-        
-        {% if rencontre.statut == constant('App\\Entity\\Rencontre::STATUT_A_VENIR') %}
-        <a href="#" class="btn btn-primary">Parier</a>
-        {% endif %}
+        <h1><small class="text-muted">Match</small> {{ rencontre.equipeA.Nom |e }} &nbsp;
+        <span class="badge rounded-pill bg-info text-dark">{{ rencontre.coteEquipeA |e}} &mdash; {{ rencontre.coteEquipeB |e}}</span>
+        &nbsp;{{ rencontre.equipeB.Nom |e }} </h1>
 
-        {% if rencontre.statut != constant('App\\Entity\\Rencontre::STATUT_A_VENIR') %}
-        Score : {{ rencontre.displayableScores |e }}<br />
+        <div class="card-body">
+            Jour du match : {{ rencontre.jour }}<br />
+            Horaire : {{ rencontre.heureDebut |date("H:i") }} - {{ rencontre.heureFin |date("H:i") }}<br />
+            Cotes : {{ rencontre.coteEquipeA |e}} contre {{ rencontre.coteEquipeB |e}}<br />
+            Statut : {{ rencontre.statutString |e }}<br />
+            Météo : {{ rencontre.meteo |e }}<br />
+            
+            {% if rencontre.statut == constant('App\\Entity\\Rencontre::STATUT_A_VENIR') %}
+            <a href="{{ path('app_pari_rencontre', {id: rencontre.id}) }}" class="btn btn-primary">Miser</a>
+            {% else %}
+
+            Score : {{ rencontre.displayableScores |e }}<br />
+        </div>
 
         <h3>Commentaires</h3>
-        {% if rencontre.EquipeA.joueurs is empty %}
+        {% if rencontre.equipeA.joueurs is empty %}
         <p id="msgNoComments">Aucun commentaire pour le momment.</p>
         {% else %}
         <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCommentaires" aria-expanded="false" aria-controls="collapseExample">
@@ -58,11 +60,11 @@ Météo : {{ rencontre.meteo |e }}<br />
 
     <div class="row">
         <div class="col-5">
-            <h3>Composition équipe {{ rencontre.EquipeA.Nom |e }}</h3>
-            {% if rencontre.EquipeA.joueurs is empty %}
+            <h3>Composition équipe {{ rencontre.equipeA.Nom |e }}</h3>
+            {% if rencontre.equipeA.joueurs is empty %}
             <p id="msgNoPlayersTeamA">Aucun joueur n'est encore inscrit sur la feuille de match</p>
             {% else %}
-            <p>{{ rencontre.EquipeA.joueurs |length }} joueurs sont inscrits sur la feuille de match :</p>
+            <p>{{ rencontre.equipeA.joueurs |length }} joueurs sont inscrits sur la feuille de match :</p>
             <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEquipeA" aria-expanded="false" aria-controls="collapseExample">
             Voir la liste des joueurs
             </button>
@@ -76,7 +78,7 @@ Météo : {{ rencontre.meteo |e }}<br />
                         </tr>
                     </thead>
                     <tbody>
-                    {% for joueur in rencontre.EquipeA.joueurs %}
+                    {% for joueur in rencontre.equipeA.joueurs %}
                         <tr>
                             <td>{{ joueur.numero |e }}</td>
                             <td>{{ joueur.nom |e }}</td>
@@ -90,11 +92,11 @@ Météo : {{ rencontre.meteo |e }}<br />
         </div>
         <div class="col-2"></div>
         <div class="col-5">
-            <h3>Composition équipe {{ rencontre.EquipeB.Nom |e }}</h3>
-            {% if rencontre.EquipeB.joueurs is empty %}
+            <h3>Composition équipe {{ rencontre.equipeB.Nom |e }}</h3>
+            {% if rencontre.equipeB.joueurs is empty %}
             <p id="msgNoPlayersTeamA">Aucun joueur n'est encore inscrit sur la feuille de match</p>
             {% else %}
-            <p>{{ rencontre.EquipeB.joueurs |length }} joueurs sont inscrits sur la feuille de match :</p>
+            <p>{{ rencontre.equipeB.joueurs |length }} joueurs sont inscrits sur la feuille de match :</p>
             <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEquipeB" aria-expanded="false" aria-controls="collapseExample">
             Voir la liste des joueurs
             </button>
@@ -108,7 +110,7 @@ Météo : {{ rencontre.meteo |e }}<br />
                         </tr>
                     </thead>
                     <tbody>
-                    {% for joueur in rencontre.EquipeB.joueurs %}
+                    {% for joueur in rencontre.equipeB.joueurs %}
                         <tr>
                             <td>{{ joueur.numero |e }}</td>
                             <td>{{ joueur.nom |e }}</td>
