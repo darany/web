@@ -9,12 +9,16 @@
                 <h2 class="mb-4">Connexion</h2>
                     <form action="{{ path('app_login') }}" method="post">
                     <div class="mb-3">
-                        <label for="username" class="form-label">Email :</label>
-                        <input type="text" class="form-control" id="username" name="_username" value="{{ last_username }}" placeholder="Entrez votre email">
+                        <div class="form-floating gx-2">
+                            <input type="text" class="form-control" id="username" name="_username" value="{{ last_username }}">
+                            <label for="username" class="form-label">Email</label>
+                        </div>
                     </div>
                     <div class="mb-3">
-                        <label for="password" class="form-label">Mot de passe : </label>
-                        <input type="password" class="form-control" id="password" name="_password" placeholder="Entrez votre mot de passe">
+                        <div class="form-floating gx-2">
+                            <input type="password" class="form-control" id="password" name="_password">
+                            <label for="password" class="form-label">Mot de passe</label>
+                        </div>
                     </div>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 

@@ -17,19 +17,8 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', null, [
-                'label' => 'Email',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez entrer un e-mail',
-                    ])
-                ],
-                'attr' => [
-                    'class' => 'form-control',
-                ],
-            ])
             ->add('nom', null, [
-                'label' => 'Nom',
+                'label' => false,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez entrer un nom',
@@ -40,7 +29,7 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('prenom', null, [
-                'label' => 'Prénom',
+                'label' => false,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez entrer un prénom',
@@ -50,9 +39,20 @@ class RegistrationFormType extends AbstractType
                     'class' => 'form-control',
                 ],
             ])
+            ->add('email', null, [
+                'label' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez entrer un e-mail',
+                    ])
+                ],
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+            ])
             ->add('plainPassword', PasswordType::class, [
+                'label' => false,
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez entrer un mot de passe',
@@ -64,6 +64,7 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
                 'attr' => [
+                    'autocomplete' => 'new-password',
                     'class' => 'form-control',
                 ],
             ])
