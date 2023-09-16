@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Repository\PariRepository;
+
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
@@ -12,23 +15,33 @@ use Symfony\Component\Routing\Annotation\Route;
 class CompteUtilisateurController extends AbstractController
 {
     #[Route('/compte/utilisateur', name: 'app_compte_utilisateur')]
-    public function index(ChartBuilderInterface $chartBuilder): Response
+    public function index(ChartBuilderInterface $chartBuilder, PariRepository $pariRepository): Response
     {
-        $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
-        $chart->setData([
-            'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        //On doit être authentifié pour accèder à son compte
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+
+        $paris = $pariRepository->findParisByUserId($user->getId());
+        $paris = new ArrayCollection($paris);      
+
+        $chart = $chartBuilder->createChart(Chart::TYPE_BAR);
+
+        $data = [
+            'labels' => $paris->map(function ($paris) { return $paris->getDate()->format('d/m/Y'); })->toArray(),
             'datasets' => [
                 [
-                    'label' => 'Sales!',
+                    'label' => 'Gains',
                     'backgroundColor' => 'rgb(255, 99, 132)',
                     'borderColor' => 'rgb(255, 99, 132)',
-                    'data' => [522, 1500, 2250, 2197, 2345, 3122, 3099],
+                    'data' => $paris->map(function ($paris) { return $paris->getGain(); })->toArray(),
                 ],
             ],
-        ]);
+        ];
+        $chart->setData($data);
 
         return $this->render('compte_utilisateur/index.html.twig', [
-            'controller_name' => 'CompteUtilisateurController',
+            'paris' => $paris,
+            'user' => $user,
             'chart' => $chart
         ]);
     }

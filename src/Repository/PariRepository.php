@@ -49,7 +49,7 @@ class PariRepository extends ServiceEntityRepository
     * @param integer $userId
     * @return array|null
     */
-   public function findRencontresByUserId(int $userId): ?array
+   public function findParisByUserId(int $userId): ?array
    {
        return $this->createQueryBuilder('pari')
            ->join('pari.rencontre', 'rencontre')
