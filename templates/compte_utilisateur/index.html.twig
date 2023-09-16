@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace utilisateur{% endblock %}
+
+{% block body %}
+
+{% include 'menu.html.twig' %}
+
+    <div class="container-fluid" style="min-height: 100vh;">
+    
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">Dashboard</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="historique-tab" data-bs-toggle="tab" data-bs-target="#historique" type="button" role="tab" aria-controls="historique" aria-selected="false">Historique des mises</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Mes informations</button>
+        </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+            <h1>Dashboard</h1>
+            <br />
+            
+            <div>
+            {% if paris is empty %}
+            <p id="msgNoChart">Aucune donnée n'est disponible</p>
+            {% else %}
+            {{ render_chart(chart) }}
+            {% endif %}
+            </div>
+
+        </div>
+        <div class="tab-pane fade" id="historique" role="tabpanel" aria-labelledby="historique-tab">
+            <h1>Historique des mises</h1>
+            <br />
+            historique à venir
+
+            {% if paris is empty %}
+            <p id="msgNoBet">Aucune donnée n'est disponible</p>
+            {% else %}
+            {{ render_chart(chart) }}
+            {% endif %}
+
+        </div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="contact-tab">
+            <h1>Mon profil</h1>
+            <br />
+            <table class="table">
+                <tr>
+                    <th scope="row">Nom</th>
+                    <td>{{ user.nom }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Prénom</th>
+                    <td>{{ user.prenom }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Email</th>
+                    <td>{{ user.email }}</td>
+                </tr>
+            </table
+        </div>
+        </div>
+    </div>
+
+{% endblock %}
