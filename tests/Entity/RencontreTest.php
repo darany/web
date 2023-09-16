@@ -39,4 +39,26 @@ class RencontreTest extends KernelTestCase
         $scores = $rencontre->getDisplayableScores();
         $this->assertEquals("55 - 20", $scores);
     }
+
+    private function testRencontreIsTerminee(): void {
+        self::bootKernel();
+        $rencontre = new Rencontre();
+        $rencontre->setStatut(Rencontre::STATUT_TERMINE);
+        $this->assertEquals(true, $rencontre->isTerminee());
+        $rencontre->setStatut(Rencontre::STATUT_A_VENIR);
+        $this->assertEquals(false, $rencontre->isTerminee());
+        $rencontre->setStatut(Rencontre::STATUT_EN_COURS);
+        $this->assertEquals(false, $rencontre->isTerminee());
+    }
+
+    private function testRencontreIsAvenir(): void {
+        self::bootKernel();
+        $rencontre = new Rencontre();
+        $rencontre->setStatut(Rencontre::STATUT_TERMINE);
+        $this->assertEquals(false, $rencontre->isAvenir());
+        $rencontre->setStatut(Rencontre::STATUT_A_VENIR);
+        $this->assertEquals(true, $rencontre->isAvenir());
+        $rencontre->setStatut(Rencontre::STATUT_EN_COURS);
+        $this->assertEquals(false, $rencontre->isAvenir());
+    }
 }

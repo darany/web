@@ -71,4 +71,36 @@ class PariController extends AbstractController
             ]);
         }
     }
+
+    #[Route('/pari/{id}', name: 'app_delete_pari', methods: ['DELETE'])]
+    public function delete(Request $request, EntityManagerInterface $entityManager, PariRepository $pariRepository,int $id): Response
+    {
+        $response = new Response();
+        $token = $request->headers->get('X-CSRF-TOKEN');
+        if (!$this->isCsrfTokenValid('delete-pari', $token)) {
+            $response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+            return $response;
+        }
+
+        //On doit être authentifié pour supprimer un pari
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+        
+        // Vérifier que le pari existe
+        $pari = $pariRepository->find($id);
+        
+        if (is_null($pari)) {
+            throw $this->createNotFoundException('Le pari n\'existe pas');
+        } else {
+            // Vérifier que le pari appartient à l'utilisateur
+            if ($pari->getUser() != $user) {
+                throw $this->createNotFoundException('Le pari n\'appartient pas à l\'utilisateur');
+            } else {
+                $entityManager->remove($pari);
+                $entityManager->flush();
+                $response->setStatusCode(Response::HTTP_OK);
+                return $response;
+            }
+        }
+    }
 }

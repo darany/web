@@ -49,7 +49,7 @@ class PariRepository extends ServiceEntityRepository
     * @param integer $userId
     * @return array|null
     */
-   public function findParisByUserId(int $userId): ?array
+   public function findParisTerminesByUserId(int $userId): ?array
    {
        return $this->createQueryBuilder('pari')
            ->join('pari.rencontre', 'rencontre')
@@ -62,4 +62,23 @@ class PariRepository extends ServiceEntityRepository
            ->getQuery()
            ->getResult();
    }
+
+   /**
+    * Retourne les paris d'un utilisateur
+    * ou un tableau vide si aucun pari n'est trouvé
+    *
+    * @param integer $userId
+    * @return array|null
+    */
+    public function findParisByUserId(int $userId): ?array
+    {
+        return $this->createQueryBuilder('pari')
+            ->join('pari.rencontre', 'rencontre')
+            ->join('pari.user', 'user')
+            ->andWhere('user.id = :user_id')
+            ->setParameter('user_id', $userId)
+            ->orderBy('pari.date', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

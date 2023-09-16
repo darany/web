@@ -41,7 +41,39 @@
             {% if paris is empty %}
             <p id="msgNoBet">Aucune donnée n'est disponible</p>
             {% else %}
-            {{ render_chart(chart) }}
+            <input type="hidden" id="csrf_token" value="{{ token }}" />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Équipes</th>
+                        <th scope="col">Date du match</th>
+                        <th scope="col">Mise / date du pari</th>
+                        <th scope="col">Gain</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pari in paris %}
+                    <tr id="pari_{{ pari.id }}">
+                        <td>{{ pari.rencontre.equipeA }} &mdash; {{ pari.rencontre.equipeB }}</td>
+                        <td>{{ pari.date |date('d/m/Y') }}, horaires {{ pari.rencontre.heureDebut |date("H:i") }} - {{ pari.rencontre.heureFin |date("H:i") }}</td>
+                        <td>
+                            {% if pari.rencontre.isAvenir == true %}
+                            <span class="clickable" data-controller="confirmation" data-action="click->confirmation#alert" data-confirmation-url-param="{{ path('app_delete_pari', {id: pari.id}) }}" data-confirmation-rowid-param="pari_{{ pari.id }}"><i class="bi bi-trash"></i></span>&nbsp;
+                            <a href="{{ path('app_pari_rencontre', {id: pari.rencontre.id}) }}"><i class="bi bi-pencil"></i></a>
+                            {% endif %}
+                            <b>{{ pari.mise }} €</b> le {{ pari.date |date('d/m/Y') }}
+                        </td>
+                        <td>
+                        {% if pari.rencontre.isTerminee == true %}
+                        {{ pari.gain }} €
+                        {% else %}
+                        &mdash;
+                        {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
             {% endif %}
 
         </div>
