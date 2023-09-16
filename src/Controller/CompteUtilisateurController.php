@@ -21,11 +21,9 @@ class CompteUtilisateurController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
 
-        $paris = $pariRepository->findParisByUserId($user->getId());
+        $paris = $pariRepository->findParisTerminesByUserId($user->getId());
         $paris = new ArrayCollection($paris);      
-
         $chart = $chartBuilder->createChart(Chart::TYPE_BAR);
-
         $data = [
             'labels' => $paris->map(function ($paris) { return $paris->getDate()->format('d/m/Y'); })->toArray(),
             'datasets' => [
@@ -39,10 +37,15 @@ class CompteUtilisateurController extends AbstractController
         ];
         $chart->setData($data);
 
+        $tousLesParis = $pariRepository->findParisByUserId($user->getId());
+        $tokenProvider = $this->container->get('security.csrf.token_manager');
+        $token = $tokenProvider->getToken('delete-pari')->getValue();
+        
         return $this->render('compte_utilisateur/index.html.twig', [
-            'paris' => $paris,
+            'paris' => $tousLesParis,
             'user' => $user,
-            'chart' => $chart
+            'chart' => $chart,
+            'token' => $token
         ]);
     }
 }

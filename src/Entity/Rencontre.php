@@ -116,6 +116,16 @@ class Rencontre
         return $statuses[$this->statut];
     }
 
+    public function isTerminee(): bool
+    {
+        return $this->statut == self::STATUT_TERMINE;
+    }
+
+    public function isAvenir(): bool
+    {
+        return $this->statut == self::STATUT_A_VENIR;
+    }
+
     public function setStatut(int $statut): static
     {
         $this->statut = $statut;
