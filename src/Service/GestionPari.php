@@ -16,7 +16,7 @@ class GestionPari
     {
         $gain = 0;
         $rencontre = $pari->getRencontre();
-        // Les ne peuvent être calculés que sur les matches terminés
+        // Les gains ne peuvent être calculés que sur les matches terminés
         if ($rencontre->getStatut() == Rencontre::STATUT_TERMINE) {
             $gain = - $pari->getMise(); // Par défaut on perd la mise, sauf si...
             if ($pari->getEquipe() == $rencontre->getEquipeA()) {

@@ -14,6 +14,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CompteUtilisateurController extends AbstractController
 {
+    /**
+     * Permet l'affichage de la page de compte utilisateur
+     * Cette page a trois vrais onglets calculés ici
+     *
+     * @param ChartBuilderInterface $chartBuilder
+     * @param PariRepository $pariRepository
+     * @return Response
+     */
     #[Route('/compte/utilisateur', name: 'app_compte_utilisateur')]
     public function index(ChartBuilderInterface $chartBuilder, PariRepository $pariRepository): Response
     {

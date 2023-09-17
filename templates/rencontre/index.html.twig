@@ -31,7 +31,7 @@
                 {% for rencontre in rencontres %}
                     <tr class="clickable" data-controller="rencontre" data-action="click->rencontre#show" data-rencontre-url-param="{{ path('app_show_rencontre', {id: rencontre.id}) }}">
                         <td><i class="bi bi-caret-right-square-fill"></i>&nbsp;{{ rencontre.jour }}</td>
-                        <td>{{ rencontre.heureDebut |date("H:i") }} - {{ rencontre.heureFin |date("H:i") }}</td>
+                        <td>{{ rencontre.horaire }}</td>
                         <td>{{ rencontre.EquipeA.Nom |e }}</td>
                         <td><span class="badge rounded-pill bg-info text-dark">{{ rencontre.CoteEquipeA |e}} &mdash; {{ rencontre.CoteEquipeB |e}}</span></td>
                         <td>{{ rencontre.EquipeB.Nom |e }}</td>
