@@ -2,11 +2,20 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+
 use App\Repository\PariRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource(
+    order: ['date' => 'DESC'],
+    paginationEnabled: false,
+)]
+#[Get(securityPostDenormalize: "is_granted('ROLE_USER') or object.getUser() == user")]
 #[ORM\Entity(repositoryClass: PariRepository::class)]
 class Pari
 {

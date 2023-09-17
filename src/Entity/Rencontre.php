@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use Symfony\Component\Serializer\Annotation\Groups;
 use \DateTime;
+use ApiPlatform\Metadata\ApiProperty;
 
 use App\Repository\RencontreRepository;
 use App\Controller\RencontreController;
@@ -27,7 +28,8 @@ use Doctrine\ORM\Mapping as ORM;
             name: 'cloturer', 
             description: 'Cloturer un match et calculer les gains des paris',
             uriTemplate: '/rencontre/{id}/cloturer', 
-            controller: RencontreController::class
+            controller: RencontreController::class,
+            security: "is_granted('ROLE_COMMENTATEUR')",
         )
     ],
     order: ['heureDebut' => 'DESC'],
@@ -107,7 +109,7 @@ class Rencontre
 
     /**
      * Retourne le total des mises sur la rencontre
-     *
+     * TODO : #[ApiProperty(security: "is_granted('ROLE_COMMENTATEUR')")]
      * @return float
      */
     #[Groups('rencontre:item')]
@@ -118,6 +120,20 @@ class Rencontre
             })->reduce(function(float $accumulator, float $value): float {
                 return $accumulator + $value;
             }, 0);
+    }
+
+    /**
+     * Retourne les commentaires de la rencontre avec l'heure du commentaire
+     * relative au début de la rencontre (en minutes depuis le début)
+     * @return float
+     */
+    #[Groups('rencontre:item')]
+    public function getTimedCommentaires(): ?array
+    {
+        return $this->commentaires->map(function ($commentaire) {
+            $time = $this->heureDebut->diff($commentaire->getDateHeure())->i;
+            return $time . 'm ' . $commentaire->getTexte(); 
+        })->toArray();
     }
 
     /**
