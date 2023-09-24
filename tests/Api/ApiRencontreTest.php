@@ -47,6 +47,7 @@ class ApiRencontre extends ApiTestCase
         $this->assertArrayNotHasKey('totalDesMises', $data);
         $this->assertArrayNotHasKey('nombreDeParisSurEquipeA', $data);
         $this->assertArrayNotHasKey('nombreDeParisSurEquipeB', $data);
+        $this->assertArrayHasKey('encours', $data);
         $this->assertEquals($rencontres[0]->getMeteo(), $data['meteo']);
         $this->assertEquals($rencontres[0]->getScoreEquipeA(), $data['scoreEquipeA']);
         $this->assertEquals($rencontres[0]->getScoreEquipeB(), $data['scoreEquipeB']);

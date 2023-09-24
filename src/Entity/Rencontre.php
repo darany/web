@@ -57,7 +57,7 @@ class Rencontre
     #[ORM\Column]
     private ?float $coteEquipeB = null;
 
-    #[ORM\OneToMany(mappedBy: 'rencontre', targetEntity: Commentaire::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'rencontre', targetEntity: Commentaire::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $commentaires;
 
     #[ORM\OneToMany(mappedBy: 'rencontre', targetEntity: Pari::class, orphanRemoval: false)]

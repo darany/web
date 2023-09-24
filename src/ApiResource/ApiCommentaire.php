@@ -3,6 +3,7 @@
 namespace App\ApiResource;
 
 use App\State\CommentaireStateProvider;
+use App\State\CommentaireStateProcessor;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Metadata\ApiResource;
@@ -13,6 +14,7 @@ use ApiPlatform\Metadata\Post;
     shortName: 'Commentaire',
     description: 'Commentaire d\'un match',
     provider: CommentaireStateProvider::class,
+    processor: CommentaireStateProcessor::class,
     paginationEnabled: false,
     operations: [
         new GetCollection(
@@ -27,15 +29,16 @@ use ApiPlatform\Metadata\Post;
 )]
 class ApiCommentaire
 {
+    #[Groups(['commentaire:list', 'commentaire:write'])]
     public ?int $id = null;
 
     #[Groups(['commentaire:write'])]
     public ?int $rencontreId = null;
 
-    #[Groups(['commentaire:write'])]
+    #[Groups(['commentaire:list', 'commentaire:write'])]
     public ?int $scoreEquipeA = null;
 
-    #Groups(['commentaire:write'])]
+    #[Groups(['commentaire:list', 'commentaire:write'])]
     public ?int $scoreEquipeB = null;
 
     #[Groups(['commentaire:write'])]
@@ -43,4 +46,5 @@ class ApiCommentaire
 
     #[Groups(['commentaire:list'])]
     public ?string $texteDate = null;
+    
 }

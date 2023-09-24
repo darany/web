@@ -128,7 +128,7 @@ class ApiRencontre
         return $statuses[$this->statut];
     }
 
-    #[Groups(['rencontre:item'])]
+    #[Groups(['rencontre:list', 'rencontre:item'])]
     public function isEncours(): ?bool
     {
         return $this->statut == self::STATUT_EN_COURS;
