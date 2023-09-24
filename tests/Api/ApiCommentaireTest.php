@@ -84,7 +84,7 @@ class ApiCommentaireTest extends ApiTestCase
     public function testGetCommentaires(): void
     {
         $rencontreRepository = static::getContainer()->get(RencontreRepository::class);
-        $rencontres = $rencontreRepository->findAll();
+        $rencontres = $rencontreRepository->toutesLesRencontresTermineesOuEnCours();
         $this->client->request('GET', '/api/rencontres/' . $rencontres[0]->getId() . '/commentaires');
         $this->assertResponseStatusCodeSame(200);
         $content = $this->client->getResponse()->getContent();

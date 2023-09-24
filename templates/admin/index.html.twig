@@ -1,20 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdminController!{% endblock %}
+{% block title %}Administration du site{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+{% include 'menu.html.twig' %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/bbalet/super_bowl/web/src/Controller/AdminController.php'|file_link(0) }}">src/Controller/AdminController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/bbalet/super_bowl/web/templates/admin/index.html.twig'|file_link(0) }}">templates/admin/index.html.twig</a></code></li>
-    </ul>
+<div class="container-fluid" style="min-height: 100vh;">
+    <h1>Administration</h1>
+
+    <p>Bienvenue sur la page d'administration du site.</p>
+
+    <p>Cette page vous permet de gérer les données du site :</p>
+ 
+    <a class="btn btn-primary" id="cmdGestionJoueurs" href='{{ path('app_admin_menu') }}'>Gestion des joueurs</a>
+    <br /><br />
+    <a class="btn btn-primary" id="cmdGestionEquipes" href='{{ path('app_admin_menu') }}'>Gestion des équipes</a>
+    <br /><br />
+    <a class="btn btn-primary" id="cmdGestionMatchs" href='{{ path('app_admin_menu') }}'>Plannification des matchs</a>
+
 </div>
 {% endblock %}

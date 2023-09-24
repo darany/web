@@ -51,6 +51,18 @@ class RencontreRepository extends ServiceEntityRepository
    }
 
    /**
+    * @return Rencontre[] Retourne tous les matchs non à venir
+    * surtout pour faciliter les tests unitaires
+    */
+    public function toutesLesRencontresTermineesOuEnCours(): array
+    {
+         return $this->createQueryBuilder('rencontre')
+             ->andWhere('rencontre.statut != ' . Rencontre::STATUT_A_VENIR)
+             ->getQuery()
+             ->getResult();
+    }
+
+   /**
     * @return Rencontre Retourne le détail d'un match
     */
    public function findRencontreById($id): ?Rencontre
