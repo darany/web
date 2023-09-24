@@ -14,9 +14,15 @@
           <a class="nav-link" href="{{ path('app_rencontre') }}">Matches</a>
         </li>
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {% if is_granted('ROLE_ADMIN') %}
+        <li class="nav-item">
+          <a class="nav-link" id="cmdAdmin" href="{{ path('app_admin_menu') }}">Administration</a>
+        </li>
+        {% else %}
         <li class="nav-item">
           <a class="nav-link" id="cmdMyProfile" href="{{ path('app_compte_utilisateur') }}">Mon espace</a>
-        </li>
+        </li>        
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link" id="cmdLogout" href="{{ path('app_logout') }}">Se déconnecter</a>
         </li>
