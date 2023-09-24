@@ -2,23 +2,10 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
-use ApiPlatform\Metadata\Delete;
-use ApiPlatform\Metadata\Patch;
 use App\Repository\CommentaireRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ApiResource]
-#[Get(security: "is_granted('PUBLIC_ACCESS')")]
-#[Post(security: "is_granted('ROLE_COMMENTATEUR')")]
-#[Delete(security: "is_granted('ROLE_ADMIN')")]
-#[Put(security: "is_granted('ROLE_COMMENTATEUR')")]
-#[Patch(security: "is_granted('ROLE_COMMENTATEUR')")]
 #[ORM\Entity(repositoryClass: CommentaireRepository::class)]
 class Commentaire
 {

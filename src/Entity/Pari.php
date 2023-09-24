@@ -2,20 +2,11 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-
 use App\Repository\PariRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ApiResource(
-    order: ['date' => 'DESC'],
-    paginationEnabled: false,
-)]
-#[Get(securityPostDenormalize: "is_granted('ROLE_USER') or object.getUser() == user")]
 #[ORM\Entity(repositoryClass: PariRepository::class)]
 class Pari
 {
@@ -61,7 +52,6 @@ class Pari
     public function setDate(\DateTimeInterface $date): static
     {
         $this->date = $date;
-
         return $this;
     }
 
@@ -73,7 +63,6 @@ class Pari
     public function setRencontre(Rencontre $rencontre): static
     {
         $this->rencontre = $rencontre;
-
         return $this;
     }
 
@@ -85,7 +74,6 @@ class Pari
     public function setEquipe(Equipe $equipe): static
     {
         $this->equipe = $equipe;
-
         return $this;
     }
 
@@ -97,7 +85,6 @@ class Pari
     public function setMise(float $mise): static
     {
         $this->mise = $mise;
-
         return $this;
     }
 
@@ -109,7 +96,6 @@ class Pari
     public function setGain(?float $gain): static
     {
         $this->gain = $gain;
-
         return $this;
     }
 
@@ -121,7 +107,6 @@ class Pari
     public function setUser(?User $user): static
     {
         $this->user = $user;
-
         return $this;
     }
 }

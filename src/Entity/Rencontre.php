@@ -2,16 +2,10 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\Post;
-use Symfony\Component\Serializer\Annotation\Groups;
+use App\ApiResource\ApiRencontre;
 use \DateTime;
-use ApiPlatform\Metadata\ApiProperty;
 
 use App\Repository\RencontreRepository;
-use App\Controller\RencontreController;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,22 +13,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RencontreRepository::class)]
-#[ApiResource(
-    description: 'Match du superbowl',
-    operations: [
-        new Get(normalizationContext: ['groups' => 'rencontre:item']),
-        new GetCollection(normalizationContext: ['groups' => 'rencontre:list']),
-        new Get(
-            name: 'cloturer', 
-            description: 'Cloturer un match et calculer les gains des paris',
-            uriTemplate: '/rencontre/{id}/cloturer', 
-            controller: RencontreController::class,
-            security: "is_granted('ROLE_COMMENTATEUR')",
-        )
-    ],
-    order: ['heureDebut' => 'DESC'],
-    paginationEnabled: false,
-)]
 class Rencontre
 {
     //Le match peut être « Termine », « À venir », « En Cours » 
@@ -45,49 +23,38 @@ class Rencontre
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['rencontre:list', 'rencontre:item'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['rencontre:list', 'rencontre:item'])]
     private ?\DateTimeInterface $heureDebut = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['rencontre:list', 'rencontre:item'])]
     private ?\DateTimeInterface $heureFin = null;
 
     #[ORM\Column]
-    #[Groups(['rencontre:list', 'rencontre:item'])]
     private ?int $statut = null;
 
     #[ORM\Column]
-    #[Groups(['rencontre:list', 'rencontre:item'])]
     private ?int $scoreEquipeA = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['rencontre:list', 'rencontre:item'])]
     private ?int $scoreEquipeB = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['rencontre:list', 'rencontre:item'])]
     private ?string $meteo = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[Groups(['rencontre:list', 'rencontre:item'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Equipe $equipeA = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[Groups(['rencontre:list', 'rencontre:item'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Equipe $equipeB = null;
 
     #[ORM\Column]
-    #[Groups(['rencontre:list', 'rencontre:item'])]
     private ?float $coteEquipeA = null;
 
     #[ORM\Column]
-    #[Groups(['rencontre:list', 'rencontre:item'])]
     private ?float $coteEquipeB = null;
 
     #[ORM\OneToMany(mappedBy: 'rencontre', targetEntity: Commentaire::class, orphanRemoval: true)]
@@ -109,10 +76,8 @@ class Rencontre
 
     /**
      * Retourne le total des mises sur la rencontre
-     * TODO : #[ApiProperty(security: "is_granted('ROLE_COMMENTATEUR')")]
      * @return float
      */
-    #[Groups('rencontre:item')]
     public function getTotalDesMises(): float
     {
         return $this->paris->map(function ($paris) {
@@ -123,11 +88,70 @@ class Rencontre
     }
 
     /**
+     * Retourne le total des mises sur l'équipe A
+     * @return float
+     */
+    public function getNombreDeParisSurEquipeA(): int
+    {
+        return $this->paris->map(function ($paris) {
+                if ($paris->getEquipe() == $this->equipeA) {
+                    return 1; 
+                } else {
+                    return 0;
+                }
+                return $paris->getMise(); 
+            })->reduce(function(float $accumulator, float $value): float {
+                return $accumulator + $value;
+            }, 0);
+    }
+
+    /**
+     * Retourne le total des mises sur l'équipe B
+     * @return float
+     */
+    public function getNombreDeParisSurEquipeB(): int
+    {
+        return $this->paris->map(function ($paris) {
+                if ($paris->getEquipe() == $this->equipeB) {
+                    return 1; 
+                } else {
+                    return 0;
+                }
+                return $paris->getMise(); 
+            })->reduce(function(float $accumulator, float $value): float {
+                return $accumulator + $value;
+            }, 0);
+    }
+
+    /**
+     * Retourne un objet ApiRencontre à partir de l'entité
+     *
+     * @return ApiRencontre
+     */
+    public function toApiRencontre(): ApiRencontre {
+        $rencontre = new ApiRencontre();
+        $rencontre->id = $this->getId();
+        $rencontre->heureDebut = $this->getHeureDebut();
+        $rencontre->heureFin = $this->getHeureFin();
+        $rencontre->statut = $this->getStatut();
+        $rencontre->scoreEquipeA = $this->getScoreEquipeA();
+        $rencontre->scoreEquipeB = $this->getScoreEquipeB();
+        $rencontre->meteo = $this->getMeteo();
+        $rencontre->equipeA = $this->getEquipeA()->getNom();
+        $rencontre->equipeB = $this->getEquipeB()->getNom();
+        $rencontre->coteEquipeA = $this->getCoteEquipeA();
+        $rencontre->coteEquipeB = $this->getCoteEquipeB();
+        $rencontre->totalDesMises = $this->getTotalDesMises();
+        $rencontre->nombreDeParisSurEquipeA = $this->getNombreDeParisSurEquipeA();
+        $rencontre->nombreDeParisSurEquipeB = $this->getNombreDeParisSurEquipeB();
+        return $rencontre;
+    }
+
+    /**
      * Retourne les commentaires de la rencontre avec l'heure du commentaire
      * relative au début de la rencontre (en minutes depuis le début)
      * @return float
      */
-    #[Groups('rencontre:item')]
     public function getTimedCommentaires(): ?array
     {
         return $this->commentaires->map(function ($commentaire) {
@@ -142,7 +166,6 @@ class Rencontre
      *
      * @return string|null
      */
-    #[Groups('rencontre:list', 'rencontre:item')]
     public function getJour(): ?string
     {
         $formatter = new \IntlDateFormatter('fr_FR', \IntlDateFormatter::LONG, \IntlDateFormatter::NONE);
@@ -155,7 +178,6 @@ class Rencontre
      * 
      * @return string|null
      */
-    #[Groups('rencontre:list', 'rencontre:item')]
     public function getHoraire(): ?string
     {
         return $this->heureDebut->format('H:i') . ' - ' . $this->heureFin->format('H:i');

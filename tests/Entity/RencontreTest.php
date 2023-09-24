@@ -3,6 +3,7 @@ namespace App\Tests\Service;
 
 use App\Entity\Rencontre;
 use App\Entity\Pari;
+use App\Entity\Equipe;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -79,6 +80,49 @@ class RencontreTest extends KernelTestCase
         $paris->setMise(23.2);
         $rencontre->addPari($paris);
         $this->assertEquals(45.7, $rencontre->getTotalDesMises());
+    }
+
+    public function testTotalDesParieurs(): void {
+        self::bootKernel();
+        $rencontre = new Rencontre();
+        $equipeA = new Equipe();
+        $equipeA->setNom("Equipe A");
+        $equipeB = new Equipe();
+        $equipeB->setNom("Equipe B");
+        $rencontre->setEquipeA($equipeA);
+        $rencontre->setEquipeB($equipeB);
+        $paris1 = new Pari();
+        $paris1->setEquipe($equipeA);
+        $rencontre->addPari($paris1);
+        $paris2 = new Pari();
+        $paris2->setEquipe($equipeA);
+        $rencontre->addPari($paris2);
+        $paris3 = new Pari();
+        $paris3->setEquipe($equipeB);
+        $rencontre->addPari($paris3);
+        $this->assertEquals(2, $rencontre->getNombreDeParisSurEquipeA());
+        $this->assertEquals(1, $rencontre->getNombreDeParisSurEquipeB());
+    }
+
+    public function testToApiRencontre(): void {
+        self::bootKernel();
+        $rencontre = new Rencontre();
+        $equipeA = new Equipe();
+        $equipeA->setNom("Equipe A");
+        $equipeB = new Equipe();
+        $equipeB->setNom("Equipe B");
+        $rencontre->setEquipeA($equipeA);
+        $rencontre->setEquipeB($equipeB);
+        $paris1 = new Pari();
+        $paris1->setMise(45);
+        $paris1->setEquipe($equipeA);
+        $rencontre->addPari($paris1);
+        $apiRencontre = $rencontre->toApiRencontre();
+        $this->assertEquals(1, $apiRencontre->nombreDeParisSurEquipeA);
+        $this->assertEquals(0, $apiRencontre->nombreDeParisSurEquipeB);
+        $this->assertEquals(45, $apiRencontre->totalDesMises);
+        $this->assertEquals("Equipe A", $apiRencontre->equipeA);
+        $this->assertEquals("Equipe B", $apiRencontre->equipeB);
     }
 
     public function testGetJour(): void {

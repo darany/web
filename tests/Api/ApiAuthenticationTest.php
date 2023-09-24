@@ -7,7 +7,7 @@ use App\Repository\UserRepository;
 /**
  * Test fonctionnel de l'authentification JWT
  */
-class AuthenticationTest extends ApiTestCase
+class ApiAuthenticationTest extends ApiTestCase
 {
     public function testLogin(): void
     {
@@ -26,12 +26,5 @@ class AuthenticationTest extends ApiTestCase
         $json = $response->toArray();
         $this->assertResponseIsSuccessful();
         $this->assertArrayHasKey('token', $json);
-
-        // TODO: test not authorized
-        // $client->request('GET', '/greetings');
-        // $this->assertResponseStatusCodeSame(401);
-        // // test authorized
-        // $client->request('GET', '/greetings', ['auth_bearer' => $json['token']]);
-        // $this->assertResponseIsSuccessful();
     }
 }

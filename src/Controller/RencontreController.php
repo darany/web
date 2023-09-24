@@ -2,14 +2,15 @@
 
 namespace App\Controller;
 
-use App\Repository\RencontreRepository;
 use App\Entity\Rencontre;
+use App\ApiResource\ApiRencontre;
+
+use App\Repository\RencontreRepository;
 use App\Service\GestionRencontre;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\ORM\EntityManagerInterface;
 
 #[AsController]
 class RencontreController extends AbstractController
@@ -55,9 +56,9 @@ class RencontreController extends AbstractController
      * @param GestionRencontre $gestionRencontre
      * @return Rencontre
      */
-    public function __invoke(Rencontre $rencontre, GestionRencontre $gestionRencontre): Rencontre
+    public function __invoke(Rencontre $rencontre, GestionRencontre $gestionRencontre): ApiRencontre
     {
         $rencontre = $gestionRencontre->cloturer($rencontre);
-        return $rencontre;
+        return $rencontre->toApiRencontre();
     }
 }
