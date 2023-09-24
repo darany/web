@@ -17,6 +17,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PariController extends AbstractController
 {
+    /**
+     * Permet à un utilisateur de parier sur une rencontre
+     * 
+     * @param PariRepository $pariRepository
+     * @return Response
+     */
     #[Route('/pari/rencontre/{id}', name: 'app_pari_rencontre')]
     public function index(Request $request, EntityManagerInterface $entityManager,
              PariRepository $pariRepository, RencontreRepository $rencontreRepository, 
@@ -69,6 +75,44 @@ class PariController extends AbstractController
                 'form' => $form,
                 'pari' => $pari,
             ]);
+        }
+    }
+
+    /**
+     * Suppression d'un pari par appel Ajax
+     * Le header doit contenir un token CSRF valide pour que la requête soit acceptée
+     * Ce token est en fait généré par le contrôleur listant les paris passés (espace utilisateur)
+     * @see \App\Controller\EspaceUtilisateurController::index()
+     */
+    #[Route('/pari/{id}', name: 'app_delete_pari', methods: ['DELETE'])]
+    public function delete(Request $request, EntityManagerInterface $entityManager, PariRepository $pariRepository,int $id): Response
+    {
+        $response = new Response();
+        $token = $request->headers->get('X-CSRF-TOKEN');
+        if (!$this->isCsrfTokenValid('delete-pari', $token)) {
+            $response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+            return $response;
+        }
+
+        //On doit être authentifié pour supprimer un pari
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+        
+        // Vérifier que le pari existe
+        $pari = $pariRepository->find($id);
+        
+        if (is_null($pari)) {
+            throw $this->createNotFoundException('Le pari n\'existe pas');
+        } else {
+            // Vérifier que le pari appartient à l'utilisateur
+            if ($pari->getUser() != $user) {
+                throw $this->createNotFoundException('Le pari n\'appartient pas à l\'utilisateur');
+            } else {
+                $entityManager->remove($pari);
+                $entityManager->flush();
+                $response->setStatusCode(Response::HTTP_OK);
+                return $response;
+            }
         }
     }
 }

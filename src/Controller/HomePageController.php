@@ -10,6 +10,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomePageController extends AbstractController
 {
+    /**
+     * Permet l'affichage de la page d'accueil
+     *
+     * @param RencontreRepository $rencontreRepository
+     * @return Response
+     */
     #[Route('/', name: 'app_home_page')]
     public function index(RencontreRepository $rencontreRepository): Response
     {

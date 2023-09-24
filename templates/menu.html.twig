@@ -1,7 +1,7 @@
 
 <nav class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">SuperBowl</a>
+    <a class="navbar-brand" href="{{ path('app_home_page') }}">SuperBowl</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -14,6 +14,15 @@
           <a class="nav-link" href="{{ path('app_rencontre') }}">Matches</a>
         </li>
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {% if is_granted('ROLE_ADMIN') %}
+        <li class="nav-item">
+          <a class="nav-link" id="cmdAdmin" href="{{ path('app_admin_menu') }}">Administration</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" id="cmdMyProfile" href="{{ path('app_compte_utilisateur') }}">Mon espace</a>
+        </li>        
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link" id="cmdLogout" href="{{ path('app_logout') }}">Se déconnecter</a>
         </li>

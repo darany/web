@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Pari;
+use App\Entity\Rencontre;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -21,7 +22,14 @@ class PariRepository extends ServiceEntityRepository
         parent::__construct($registry, Pari::class);
     }
 
-   public function findOneByRencontreIdAndUserId($rencontreId, $userId): ?Pari
+    /**
+     * Retourne le pari d'un utilisateur pour une rencontre donnée ou null
+     *
+     * @param integer $rencontreId
+     * @param integer $userId
+     * @return Pari|null
+     */
+   public function findOneByRencontreIdAndUserId(int $rencontreId, int  $userId): ?Pari
    {
        return $this->createQueryBuilder('pari')
            ->join('pari.rencontre', 'rencontre')
@@ -31,7 +39,46 @@ class PariRepository extends ServiceEntityRepository
            ->setParameter('rencontre_id', $rencontreId)
            ->setParameter('user_id', $userId)
            ->getQuery()
-           ->getOneOrNullResult()
-       ;
+           ->getOneOrNullResult();
    }
+
+   /**
+    * Retourne les paris d'un utilisateur qui concernent les matchs terminés
+    * ou un tableau vide si aucun pari n'est trouvé
+    *
+    * @param integer $userId
+    * @return array|null
+    */
+   public function findParisTerminesByUserId(int $userId): ?array
+   {
+       return $this->createQueryBuilder('pari')
+           ->join('pari.rencontre', 'rencontre')
+           ->join('pari.user', 'user')
+           ->andWhere('user.id = :user_id')
+           ->setParameter('user_id', $userId)
+           ->andWhere('rencontre.statut = :statut')
+           ->setParameter('statut', Rencontre::STATUT_TERMINE)
+           ->orderBy('pari.date', 'ASC')
+           ->getQuery()
+           ->getResult();
+   }
+
+   /**
+    * Retourne les paris d'un utilisateur
+    * ou un tableau vide si aucun pari n'est trouvé
+    *
+    * @param integer $userId
+    * @return array|null
+    */
+    public function findParisByUserId(int $userId): ?array
+    {
+        return $this->createQueryBuilder('pari')
+            ->join('pari.rencontre', 'rencontre')
+            ->join('pari.user', 'user')
+            ->andWhere('user.id = :user_id')
+            ->setParameter('user_id', $userId)
+            ->orderBy('pari.date', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

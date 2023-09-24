@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration du site{% endblock %}
+
+{% block body %}
+
+{% include 'menu.html.twig' %}
+
+<div class="container-fluid" style="min-height: 100vh;">
+    <h1>Administration</h1>
+
+    <p>Bienvenue sur la page d'administration du site.</p>
+
+    <p>Cette page vous permet de gérer les données du site :</p>
+ 
+    <a class="btn btn-primary" id="cmdGestionJoueurs" href='{{ path('app_admin_menu') }}'>Gestion des joueurs</a>
+    <br /><br />
+    <a class="btn btn-primary" id="cmdGestionEquipes" href='{{ path('app_admin_menu') }}'>Gestion des équipes</a>
+    <br /><br />
+    <a class="btn btn-primary" id="cmdGestionMatchs" href='{{ path('app_admin_menu') }}'>Plannification des matchs</a>
+
+</div>
+{% endblock %}
