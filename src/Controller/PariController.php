@@ -17,6 +17,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PariController extends AbstractController
 {
+    /**
+     * Permet à un utilisateur de parier sur une rencontre
+     * 
+     * @param PariRepository $pariRepository
+     * @return Response
+     */
     #[Route('/pari/rencontre/{id}', name: 'app_pari_rencontre')]
     public function index(Request $request, EntityManagerInterface $entityManager,
              PariRepository $pariRepository, RencontreRepository $rencontreRepository, 
@@ -72,6 +78,12 @@ class PariController extends AbstractController
         }
     }
 
+    /**
+     * Suppression d'un pari par appel Ajax
+     * Le header doit contenir un token CSRF valide pour que la requête soit acceptée
+     * Ce token est en fait généré par le contrôleur listant les paris passés (espace utilisateur)
+     * @see \App\Controller\EspaceUtilisateurController::index()
+     */
     #[Route('/pari/{id}', name: 'app_delete_pari', methods: ['DELETE'])]
     public function delete(Request $request, EntityManagerInterface $entityManager, PariRepository $pariRepository,int $id): Response
     {

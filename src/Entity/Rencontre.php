@@ -2,15 +2,17 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
+use App\ApiResource\ApiRencontre;
+use \DateTime;
+
 use App\Repository\RencontreRepository;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RencontreRepository::class)]
-#[ApiResource]
 class Rencontre
 {
     //Le match peut être « Termine », « À venir », « En Cours » 
@@ -55,7 +57,7 @@ class Rencontre
     #[ORM\Column]
     private ?float $coteEquipeB = null;
 
-    #[ORM\OneToMany(mappedBy: 'rencontre', targetEntity: Commentaire::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'rencontre', targetEntity: Commentaire::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $commentaires;
 
     #[ORM\OneToMany(mappedBy: 'rencontre', targetEntity: Pari::class, orphanRemoval: false)]
@@ -64,6 +66,7 @@ class Rencontre
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
+        $this->paris = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -71,10 +74,113 @@ class Rencontre
         return $this->id;
     }
 
+    /**
+     * Retourne le total des mises sur la rencontre
+     * @return float
+     */
+    public function getTotalDesMises(): float
+    {
+        return $this->paris->map(function ($paris) {
+                return $paris->getMise(); 
+            })->reduce(function(float $accumulator, float $value): float {
+                return $accumulator + $value;
+            }, 0);
+    }
+
+    /**
+     * Retourne le total des mises sur l'équipe A
+     * @return float
+     */
+    public function getNombreDeParisSurEquipeA(): int
+    {
+        return $this->paris->map(function ($paris) {
+                if ($paris->getEquipe() == $this->equipeA) {
+                    return 1; 
+                } else {
+                    return 0;
+                }
+                return $paris->getMise(); 
+            })->reduce(function(float $accumulator, float $value): float {
+                return $accumulator + $value;
+            }, 0);
+    }
+
+    /**
+     * Retourne le total des mises sur l'équipe B
+     * @return float
+     */
+    public function getNombreDeParisSurEquipeB(): int
+    {
+        return $this->paris->map(function ($paris) {
+                if ($paris->getEquipe() == $this->equipeB) {
+                    return 1; 
+                } else {
+                    return 0;
+                }
+                return $paris->getMise(); 
+            })->reduce(function(float $accumulator, float $value): float {
+                return $accumulator + $value;
+            }, 0);
+    }
+
+    /**
+     * Retourne un objet ApiRencontre à partir de l'entité
+     *
+     * @return ApiRencontre
+     */
+    public function toApiRencontre(): ApiRencontre {
+        $rencontre = new ApiRencontre();
+        $rencontre->id = $this->getId();
+        $rencontre->heureDebut = $this->getHeureDebut();
+        $rencontre->heureFin = $this->getHeureFin();
+        $rencontre->statut = $this->getStatut();
+        $rencontre->scoreEquipeA = $this->getScoreEquipeA();
+        $rencontre->scoreEquipeB = $this->getScoreEquipeB();
+        $rencontre->meteo = $this->getMeteo();
+        $rencontre->equipeA = $this->getEquipeA()->getNom();
+        $rencontre->equipeB = $this->getEquipeB()->getNom();
+        $rencontre->coteEquipeA = $this->getCoteEquipeA();
+        $rencontre->coteEquipeB = $this->getCoteEquipeB();
+        $rencontre->totalDesMises = $this->getTotalDesMises();
+        $rencontre->nombreDeParisSurEquipeA = $this->getNombreDeParisSurEquipeA();
+        $rencontre->nombreDeParisSurEquipeB = $this->getNombreDeParisSurEquipeB();
+        return $rencontre;
+    }
+
+    /**
+     * Retourne les commentaires de la rencontre avec l'heure du commentaire
+     * relative au début de la rencontre (en minutes depuis le début)
+     * @return float
+     */
+    public function getTimedCommentaires(): ?array
+    {
+        return $this->commentaires->map(function ($commentaire) {
+            $time = $this->heureDebut->diff($commentaire->getDateHeure())->i;
+            return $time . 'm ' . $commentaire->getTexte(); 
+        })->toArray();
+    }
+
+    /**
+     * Retourne le jour de la rencontre à partir de l'heure de début
+     * Formatté en français
+     *
+     * @return string|null
+     */
     public function getJour(): ?string
     {
         $formatter = new \IntlDateFormatter('fr_FR', \IntlDateFormatter::LONG, \IntlDateFormatter::NONE);
         return $formatter->format($this->heureDebut);
+    }
+
+    /**
+     * Retourne l'heure de début et de fin de la rencontre séparés par un tiret 
+     * dans une chaîne de caractères
+     * 
+     * @return string|null
+     */
+    public function getHoraire(): ?string
+    {
+        return $this->heureDebut->format('H:i') . ' - ' . $this->heureFin->format('H:i');
     }
 
     public function getHeureDebut(): ?\DateTimeInterface

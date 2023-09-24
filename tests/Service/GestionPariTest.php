@@ -7,6 +7,9 @@ use App\Entity\Equipe;
 use App\Service\GestionPari;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
+/**
+ * Test unitaire de la classe GestionPari
+ */
 class GestionPariTest extends KernelTestCase
 {
 

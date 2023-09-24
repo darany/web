@@ -1,6 +1,6 @@
 # GitHub Action for Symfony with MySQL
 name: Testing Symfony with MySQL
-on: [push, pull_request]
+on: [push]
 jobs:
   symfony:
     name: Symfony (PHP ${{ matrix.php-versions }})
@@ -74,6 +74,7 @@ jobs:
           php bin/console doctrine:schema:drop --full-database --force || echo "Cannot drop the schema"
           php bin/console doctrine:migrations:migrate --no-interaction || echo "No migrations found or migration failed"
           php bin/console doctrine:fixtures:load --no-interaction || echo "Loading fixtures failed"
+          php bin/console lexik:jwt:generate-keypair || echo "Cannot generate keys pair"
         env:
           DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony
 
