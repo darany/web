@@ -14,3 +14,13 @@ body {
 .clickable {
     cursor: pointer;
 }
+
+.filter--notFound {
+    display: none;
+}
+
+/* Bord arrondis pour les tables */
+.table-rounded {
+    border-radius: 9px;
+    overflow: hidden;
+}

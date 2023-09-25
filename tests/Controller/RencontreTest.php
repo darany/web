@@ -26,13 +26,9 @@ class RencontreTest extends WebTestCase
     {
         $client = static::createClient();
         $crawler = $client->request('GET', 'rencontre');
-
-        //<tr style="cursor:pointer;" onclick="window.location='/rencontre/15';">
-        $rencontres = $crawler->filterXPath('//tr[@class="clickable"]')->extract(['data-rencontre-url-param']);
+        $rencontres = $crawler->filterXPath('//tr[@class="clickable"]')->extract(['data-tablemanager-url-param']);
         $this->assertNotEmpty($rencontres);
         $crawler = $client->request('GET', $rencontres[0]);
-
-        //Contenu attendu
         $this->assertResponseIsSuccessful();
         $this->assertPageTitleContains("Détails du match");
     }
