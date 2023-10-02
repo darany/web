@@ -40,22 +40,24 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-            $user->setNom($form->get('nom')->getData());
-            $user->setPrenom($form->get('prenom')->getData());
+            $nom = htmlspecialchars($form->get('nom')->getData());
+            $prenom = htmlspecialchars($form->get('prenom')->getData());
+            $user->setNom($nom);
+            $user->setPrenom($prenom);
             $entityManager->persist($user);
             $entityManager->flush();
 
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
-                    ->from(new Address('mailer@jorani.org', 'Jorani Mail Bot'))
+                    ->from(new Address('mailer@jorani.org', 'SuperBowl Mail Bot'))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
-            // do anything else you need here, like send an email
-
-            return $this->redirectToRoute('app_home_page');
+            //Rediririger vers la page de login
+            $this->addFlash('success', 'Le compte a été créé avec succès. Veuillez vérifier votre email.');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('registration/register.html.twig', [

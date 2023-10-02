@@ -20,7 +20,7 @@ class EquipeTest extends WebTestCase
         $userRepository = static::getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('user0@example.org');
         $this->client->loginUser($testUser);
-        $crawler = $this->client->request('GET', '/admin/equipe');
+        $crawler = $this->client->request('GET', '/admin/equipes');
         $this->assertResponseStatusCodeSame(403);   // 403 = Forbidden
     }
 
@@ -29,7 +29,7 @@ class EquipeTest extends WebTestCase
         $userRepository = static::getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('admin@example.org');
         $this->client->loginUser($testUser);
-        $crawler = $this->client->request('GET', '/admin/equipe');
+        $crawler = $this->client->request('GET', '/admin/equipes');
         $this->assertResponseStatusCodeSame(200);
         $this->assertSelectorExists('h2[id=titleEquipes]');
         $this->assertSelectorNotExists('p[id=msgNoPTeamsFound]');

@@ -25,7 +25,7 @@ class HomePageTest extends WebTestCase
 
     public function testRencontreAccesDetail(): void
     {
-        $crawler = $this->client->request('GET', 'rencontre');
+        $crawler = $this->client->request('GET', 'rencontres');
         $rencontres = $crawler->filterXPath('//tr[@class="clickable"]')->extract(['data-tablemanager-url-param']);
         $this->assertNotEmpty($rencontres);
         $crawler = $this->client->request('GET', $rencontres[0]);

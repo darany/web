@@ -9,7 +9,7 @@ class RencontreTest extends WebTestCase
     public function testRencontreIndex(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', 'rencontre');
+        $crawler = $client->request('GET', 'rencontres');
 
         //Présence du menu
         $this->assertSelectorExists('a[class=navbar-brand]');
@@ -25,7 +25,7 @@ class RencontreTest extends WebTestCase
     public function testRencontreAccesDetail(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', 'rencontre');
+        $crawler = $client->request('GET', 'rencontres');
         $rencontres = $crawler->filterXPath('//tr[@class="clickable"]')->extract(['data-tablemanager-url-param']);
         $this->assertNotEmpty($rencontres);
         $crawler = $client->request('GET', $rencontres[0]);
