@@ -1,0 +1,51 @@
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLUseCase</id><coordinates><x>300</x><y>190</y><w>190</w><h>90</h></coordinates><panel_attributes>Observation des matchs
+
+Commenter les matchs
+bg=blue
+valign=center
+halign=center
+layer=3
+transparency=0</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>220</x><y>260</y><w>140</w><h>250</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>120;10;10;230</additional_attributes></element><element><id>UMLClass</id><coordinates><x>310</x><y>80</y><w>190</w><h>70</h></coordinates><panel_attributes>Finalité : Prise de pari
+sur le SuperBowl
+valign=center
+halign=center
+layer=3
+transparency=0
+bg=blue</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>560</x><y>270</y><w>190</w><h>50</h></coordinates><panel_attributes>valign=center
+halign=center
+lt=.
+Encaisser/décaisser les paris</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>390</x><y>120</y><w>240</w><h>460</h></coordinates><panel_attributes>lt=.
+layer=2</panel_attributes><additional_attributes>10;10;220;440</additional_attributes></element><element><id>Text</id><coordinates><x>620</x><y>480</y><w>110</w><h>60</h></coordinates><panel_attributes>Sorties :  
+Paris</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLState</id><coordinates><x>180</x><y>490</y><w>100</w><h>30</h></coordinates><panel_attributes>type=sender
+bg=blue
+layer=3
+transparency=0</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>570</x><y>210</y><w>120</w><h>30</h></coordinates><panel_attributes>Non informatisé</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>40</x><y>200</y><w>120</w><h>30</h></coordinates><panel_attributes>À informatiser</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>30</x><y>250</y><w>190</w><h>40</h></coordinates><panel_attributes>valign=center
+halign=center
+Prise de pari</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>30</x><y>300</y><w>190</w><h>40</h></coordinates><panel_attributes>valign=center
+halign=center
+Commenter en temps réel</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>30</x><y>350</y><w>190</w><h>40</h></coordinates><panel_attributes>valign=center
+halign=center
+Score en temps réel</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>320</x><y>350</y><w>170</w><h>70</h></coordinates><panel_attributes>Gérer les joueurs, les équipes, la plannification des matchs, les utilisateurs
+valign=center
+halign=center
+style=wordwrap
+layer=3
+transparency=0
+bg=blue</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>290</x><y>220</y><w>220</w><h>40</h></coordinates><panel_attributes>lt=.
+layer=4
+</panel_attributes><additional_attributes>10;20;200;20</additional_attributes></element><element><id>UMLState</id><coordinates><x>510</x><y>490</y><w>100</w><h>30</h></coordinates><panel_attributes>type=sender
+bg=blue
+layer=3
+transparency=0</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>300</x><y>470</y><w>190</w><h>70</h></coordinates><panel_attributes>Prise de pari sur les matchs à venir
+valign=center
+halign=center
+style=wordwrap
+layer=3
+transparency=0
+bg=blue</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>160</x><y>110</y><w>260</w><h>470</h></coordinates><panel_attributes>lt=.
+layer=2</panel_attributes><additional_attributes>240;10;10;450</additional_attributes></element><element><id>Text</id><coordinates><x>70</x><y>470</y><w>110</w><h>80</h></coordinates><panel_attributes>Entrées :  
+Mises
+Commentaires
+Scores</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>160</x><y>550</y><w>470</w><h>30</h></coordinates><panel_attributes>lt=.
+layer=2</panel_attributes><additional_attributes>450;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>360</x><y>270</y><w>30</w><h>100</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;10;80</additional_attributes></element><element><id>Relation</id><coordinates><x>430</x><y>260</y><w>30</w><h>110</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>390</x><y>270</y><w>30</w><h>100</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;80;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>460</x><y>410</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>330</x><y>410</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;10;60</additional_attributes></element><element><id>Relation</id><coordinates><x>390</x><y>140</y><w>30</w><h>70</h></coordinates><panel_attributes>lt=&lt;-
+lw=4</panel_attributes><additional_attributes>10;50;10;10</additional_attributes></element></diagram>
