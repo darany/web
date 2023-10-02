@@ -81,4 +81,20 @@ class PariRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * Compte tous les paris sur une équipe
+     *
+     * @param integer $equipeId
+     * @return int nombre de rencontres trouvées
+     */
+    public function countAllParisForEquipeId(int $equipeId): int
+    {
+        return $this->createQueryBuilder('pari')
+            ->select('count(1)')
+            ->orWhere('pari.equipe = :id')
+            ->setParameter('id', $equipeId)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

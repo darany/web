@@ -9,25 +9,16 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            {% for msg in app.session.flashBag.get('success') %}
-                <div class="alert alert-success">
-                    {{ msg }}
-                </div>
-            {% endfor %}
-                
-            {% for msg in app.session.flashBag.get('error') %}
-                <div class="alert alert-danger">
-                    {{ msg }}
-                </div>
-            {% endfor %}
+            {% include 'alert.success.html.twig' %}
+            {% include 'alert.error.html.twig' %}
         </div>
     </div>
     <div class="row">
         <div class="col-1"></div>
         <div class="col-10">
-            <h2 id="titleEquipes">Liste des équipes</h2>
+            <h2 id="titleEquipes">Liste des équipes <a class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cliquez pour ajouter une équipe" href="{{ path('app_create_equipe') }}"><i class="bi bi-plus"></i></a></h2>
             {% if equipes is empty %}
-            <p id="msgNoPTeamsFound">Oups ! Une erreur est apparue</p>
+            <p id="msgNoPTeamsFound">Il semble qu'il n'y ait encore aucune équipe de définie.</p>
             {% else %}
             <p>Cliquez sur une ligne pour modifier les informations d'une équipe :</p>
 
@@ -50,8 +41,8 @@
                     {% for equipe in equipes %}
                         <tr class="clickable" 
                         data-tableManager-target="filterable" data-tableManager-key='{{ equipe.nom|e }} {{ equipe.pays|e }}'
-                        data-action="click->tableManager#show" data-tableManager-url-param="{{ path('app_show_equipe', {id: equipe.id}) }}">
-                            <td>{{ equipe.nom|e }}</td>
+                        data-action="click->tableManager#show" data-tableManager-url-param="{{ path('app_edit_equipe', {id: equipe.id}) }}">
+                            <td><a href="{{ path('app_delete_equipe', {id: equipe.id}) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cliquez pour supprimer l'équipe" ><i class="bi bi-trash"></i></a> {{ equipe.nom|e }}</td>
                             <td>{{ equipe.pays|e }}</td>
                         </tr>
                     {% endfor %}

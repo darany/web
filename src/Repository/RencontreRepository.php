@@ -73,4 +73,22 @@ class RencontreRepository extends ServiceEntityRepository
            ->getQuery()
            ->getOneOrNullResult();
    }
+
+    /**
+     * Compte toutes les rencontres d'une équipe
+     *
+     * @param integer $equipeId
+     * @return int nombre de rencontres trouvées
+     */
+    public function countAllRencontresForEquipeId(int $equipeId): int
+    {
+        return $this->createQueryBuilder('rencontre')
+            ->select('count(1)')
+            ->orWhere('rencontre.equipeA = :equipeA')
+            ->setParameter('equipeA', $equipeId)
+            ->orWhere('rencontre.equipeB = :equipeB')
+            ->setParameter('equipeB', $equipeId)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }
