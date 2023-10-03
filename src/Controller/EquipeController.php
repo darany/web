@@ -22,7 +22,7 @@ class EquipeController extends AbstractController
         private EquipeRepository $equipeRepository
         ) {}
 
-    #[Route('/admin/equipes', name: 'app_equipe')]
+    #[Route('/admin/equipes', name: 'app_equipes')]
     public function index(): Response
     {
         $equipes = $this->equipeRepository->findAll();
@@ -46,7 +46,7 @@ class EquipeController extends AbstractController
             $this->entityManager->persist($equipe);
             $this->entityManager->flush();
             $this->addFlash('success', "L'équipe a été modifiée avec succès.");
-            return $this->redirectToRoute('app_equipe');
+            return $this->redirectToRoute('app_equipes');
         }
 
         return $this->render('equipe/edit.html.twig', [
@@ -67,7 +67,7 @@ class EquipeController extends AbstractController
             $this->entityManager->persist($equipe);
             $this->entityManager->flush();
             $this->addFlash('success', "L'équipe a été créée avec succès.");
-            return $this->redirectToRoute('app_equipe');
+            return $this->redirectToRoute('app_equipes');
         }
 
         return $this->render('equipe/create.html.twig', [
@@ -77,7 +77,7 @@ class EquipeController extends AbstractController
 
 
     #[Route('/admin/equipes/{id}/delete', name: 'app_delete_equipe')]
-    public function delete(int $id, Request $request): Response
+    public function delete(int $id): Response
     {
         $equipe = $this->equipeRepository->findOneById($id);
         if (!$equipe) {
@@ -87,26 +87,26 @@ class EquipeController extends AbstractController
         //Il n'est pas possible de supprimer une équipe si elle possède des joueurs
         if (count($equipe->getJoueurs()) > 0) {
             $this->addFlash('error', "L'équipe ne peut pas être supprimée car elle possède des joueurs.");
-            return $this->redirectToRoute('app_equipe');
+            return $this->redirectToRoute('app_equipes');
         }
 
         //Il n'est pas possible de supprimer une équipe si elle a joué un match
         $rencontreRepository = $this->entityManager->getRepository(Rencontre::class);
         if ($rencontreRepository->countAllRencontresForEquipeId($id) > 0) {
             $this->addFlash('error', "L'équipe ne peut pas être supprimée car elle a joué un match.");
-            return $this->redirectToRoute('app_equipe');
+            return $this->redirectToRoute('app_equipes');
         }
 
         //Il n'est pas possible de supprimer une équipe si des paris ont été faits sur elle
         $pariRepository = $this->entityManager->getRepository(Pari::class);
         if ($pariRepository->countAllParisForEquipeId($id) > 0) {
             $this->addFlash('error', "L'équipe ne peut pas être supprimée car des paris ont été faits sur elle.");
-            return $this->redirectToRoute('app_equipe');
+            return $this->redirectToRoute('app_equipes');
         }
         
         $this->entityManager->remove($equipe);
         $this->entityManager->flush();
         $this->addFlash('success', "L'équipe a été supprimée avec succès.");
-        return $this->redirectToRoute('app_equipe');
+        return $this->redirectToRoute('app_equipes');
     }
 }

@@ -3,11 +3,11 @@
 namespace App\Tests;
 
 use App\Repository\UserRepository;
-use App\Entity\Equipe;
+use App\Entity\Joueur;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class EquipeTest extends WebTestCase
+class JoueurTest extends WebTestCase
 {
     private KernelBrowser $client;
 
@@ -21,7 +21,7 @@ class EquipeTest extends WebTestCase
         $userRepository = static::getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('user0@example.org');
         $this->client->loginUser($testUser);
-        $crawler = $this->client->request('GET', '/admin/equipes');
+        $crawler = $this->client->request('GET', '/admin/joueurs');
         $this->assertResponseStatusCodeSame(403);   // 403 = Forbidden
     }
 
@@ -30,72 +30,75 @@ class EquipeTest extends WebTestCase
         $userRepository = static::getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('admin@example.org');
         $this->client->loginUser($testUser);
-        $crawler = $this->client->request('GET', '/admin/equipes');
+        $crawler = $this->client->request('GET', '/admin/joueurs');
         $this->assertResponseStatusCodeSame(200);
-        $this->assertSelectorExists('h2[id=titleEquipes]');
-        $this->assertSelectorNotExists('p[id=msgNoPTeamsFound]');
+        $this->assertSelectorExists('h2[id=titleJoueurs]');
+        $this->assertSelectorNotExists('p[id=msgNoPlayerFound]');
     }
 
-    public function testCreateNewTeam(): void
+    public function testCreateNewPlayer(): void
     {
         $userRepository = static::getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('admin@example.org');
         $this->client->loginUser($testUser);
-        $crawler = $this->client->request('GET', '/admin/equipes/create');
+        $crawler = $this->client->request('GET', '/admin/joueurs/create');
         $buttonCrawlerNode = $crawler->selectButton("Enregistrer");
         $form = $buttonCrawlerNode->form();
         $newNom = $this->generateRandomString();
-        $form['equipe[nom]'] = $newNom;
-        $form['equipe[pays]'] = 'Barbie Land';
+        $form['joueur[nom]'] = $newNom;
+        $form['joueur[prenom]'] = 'Bobby';
+        $form['joueur[numero]'] = 96;
         $this->client->submit($form);
-        $crawler = $this->client->request('GET', '/admin/equipes');
+        $crawler = $this->client->request('GET', '/admin/joueurs');
         $cells = $crawler->filter('td:contains("' . $newNom . '")');
         $this->assertCount(1, $cells);
     }
 
-    public function testEditTeam(): void
+    public function testEditPlayer(): void
     {
         $userRepository = static::getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('admin@example.org');
         $this->client->loginUser($testUser);
         //Créer l'équipe en BDD
-        $equipe = new Equipe();
-        $equipe->setNom($this->generateRandomString());
-        $equipe->setPays('Tales Land');
+        $joueur = new Joueur();
+        $joueur->setNom($this->generateRandomString());
+        $joueur->setPrenom('Bobby');
+        $joueur->setNumero(96);
         $entityManager = static::getContainer()->get('doctrine')->getManager();
-        $entityManager->persist($equipe);
+        $entityManager->persist($joueur);
         $entityManager->flush();
 
         //Récupération de l'id de l'équipe créée et édition
-        $crawler = $this->client->request('GET', '/admin/equipes/' . $equipe->getId());
+        $crawler = $this->client->request('GET', '/admin/joueurs/' . $joueur->getId());
         $buttonCrawlerNode = $crawler->selectButton("Enregistrer");
         $form = $buttonCrawlerNode->form();
-        $form['equipe[nom]'] = 'Peu importe';
-        $newPays = $this->generateRandomString();
-        $form['equipe[pays]'] = $newPays;
+        $form['joueur[nom]'] = 'Nimporte';
+        $newPrenom = $this->generateRandomString();
+        $form['joueur[prenom]'] = $newPrenom;
         $this->client->submit($form);
-        $crawler = $this->client->request('GET', '/admin/equipes');
-        $cells = $crawler->filter('td:contains("' . $newPays . '")');
+        $crawler = $this->client->request('GET', '/admin/joueurs');
+        $cells = $crawler->filter('td:contains("' . $newPrenom . '")');
         $this->assertCount(1, $cells);
     }
 
-    public function testDeleteTeam(): void
+    public function testDeletePlayer(): void
     {
         $userRepository = static::getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('admin@example.org');
         $this->client->loginUser($testUser);
         //Créer l'équipe en BDD
-        $equipe = new Equipe();
+        $joueur = new Joueur();
         $newNom = $this->generateRandomString();
-        $equipe->setNom($newNom);
-        $equipe->setPays('No man\'s Land');
+        $joueur->setNom($newNom);
+        $joueur->setPrenom('Bobby');
+        $joueur->setNumero(96);
         $entityManager = static::getContainer()->get('doctrine')->getManager();
-        $entityManager->persist($equipe);
+        $entityManager->persist($joueur);
         $entityManager->flush();
 
         //Récupération de l'id de l'équipe créée et suppression
-        $crawler = $this->client->request('GET', '/admin/equipes/' . $equipe->getId() . '/delete');
-        $crawler = $this->client->request('GET', '/admin/equipes');
+        $crawler = $this->client->request('GET', '/admin/joueurs/' . $joueur->getId() . '/delete');
+        $crawler = $this->client->request('GET', '/admin/joueurs');
         $cells = $crawler->filter('td:contains("' . $newNom . '")');
         $this->assertCount(0, $cells);
     }

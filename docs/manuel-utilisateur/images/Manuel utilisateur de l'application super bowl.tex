@@ -1,5 +1,6 @@
 \documentclass{book}
 \usepackage{tabularx}
+\usepackage{float}
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{listings}
@@ -27,7 +28,7 @@
 Les comptes utilisateurs sont listés dans le tableau \ref{tab:table1}. Ces comptes sont utilisables sur les
 trois applications (web, mobile et bureautique).
 
-\begin{table}
+\begin{table}[H]
   \label{tab:table1}
     \begin{tabular}{l|l|l} \toprule
       \textbf{Login} & \textbf{Mot de passe} & \textbf{Rôle}\\ \hline
@@ -63,7 +64,7 @@ Certaines fonctionnalités sont publiques, c'est à dire qu'elles sont accessibl
   \item la page de visualisation des matchs et du détail de chaque match
 \end{itemize}
 
-\begin{table}
+\begin{table}[H]
   \label{tab:table2}
     \begin{tabular}{l|c|c|c|c} \toprule
       \textbf{Compte} & \textbf{Parier} & \textbf{Commenter} & \textbf{Score} & \textbf{Administrer} \\ \hline

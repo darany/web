@@ -1,6 +1,8 @@
 \documentclass{book}
 \usepackage{tabularx}
 \usepackage{graphicx}
+\usepackage{float}
+\usepackage{lscape}
 \graphicspath{ {./images/} }
 \title{Dossier de conception technique - application Super Bowl}
 \author{Benjamin BALET}
@@ -16,12 +18,33 @@
 
 \subsection{Hyptohèses}
 
+1. Le cahier des charges mentionne la nécessité de pouvoir créer des équipes et des joueurs, mais pas les autres opérations CRUD. 
+Nous supposons nécessaire de pouvoir créer, modifier et supprimer des équipes et des joueurs.
+Nous supposons toutefois qu'il n'est pas possible de supprimer un joueur appartenant à une équipe.
+Nous supposons également qu'il n'est pas possible de supprimer une équipe dans les conditions suivantes :
+\begin{itemize}
+    \item L'équipe possède des joueurs
+    \item L'équipe a participé à un match
+    \item Un pari a été fait sur l'équipe
+\end{itemize}
+
+2. Aucune indication sur les performances n'est indiquée dans le cahier des charges. Nous supposons que les performances
+attendues pour les affichages de pages sont inférieures à 1 seconde. Nous supposons également que les performances attendues
+pour les opérations de l'API sont inférieures à 0,5 seconde. À l'exception de l'opération de clôture d'un match qui nécessite
+des calculs complexes.
+
 \subsection{Mission principale du système}
 
 \subsection{Environnement}
 
 \chapter{Exigences fonctionnelles}
 
+\begin{landscape}
+  
+  ...
+
+
+\end{landscape}
 
 \chapter{Exigences non fonctionnelles}
 
