@@ -1,0 +1,96 @@
+\documentclass{book}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+\graphicspath{ {./images/} }
+\title{Manuel utilisateur de l'application Super Bowl}
+\author{Benjamin BALET}
+\date{Septembre 2023}
+\begin{document}
+\maketitle{}
+\tableofcontents
+\newpage
+
+
+\chapter{Introduction}
+\subsection{Comptes utilisateurs}
+
+Les comptes utilisateurs sont listés dans le tableau \ref{tab:table1}. Ces comptes sont utilisables sur les
+trois applications (web, mobile et bureautique).
+
+\begin{table}[H]
+  \label{tab:table1}
+    \begin{tabular}{l|l|l} \toprule
+      \textbf{Login} & \textbf{Mot de passe} & \textbf{Rôle}\\ \hline
+      admin@example.org & admin & Administrateur  \\ \hline
+      commentateur@example.org & commentateur & Commentateur  \\ \hline
+      visiteur@example.org & visiteur & Visiteur sans pari  \\ \hline
+      user0 & user0@example.org  & Utilisateur avec au moins un pari  \\ \hline
+      \ldots & \ldots  & \ldots  \\ \hline
+      user20 & user20@example.org & Utilisateur avec au moins un pari  \\ \hline
+    \end{tabular}
+    \caption{Comptes utilisateurs}
+\end{table}
+
+Les comptes utilisateurs sont créés à l'aide d'une fixture Symfony. Les mots de passe sont cryptés avec 
+l'algorithme bcrypt. Pour créer les comptes utilisateurs, exécutez la commande suivante :
+\begin{lstlisting}[language=bash]
+  $ php bin/console doctrine:fixtures:load --no-interaction
+\end{lstlisting}
+
+
+\subsection{Habilitations}
+
+Une habilitation est un droit d'accès à une fonctionnalité de l'application. Les habilitations sont listées 
+dans le tableau \ref{tab:table2}. On note que les administrateurs ont accès à toutes les fonctionnalités de
+l'application. 
+
+Certaines fonctionnalités sont publiques, c'est à dire qu'elles sont accessibles à tous les utilisateurs, même non connectés :
+\begin{itemize}
+  \item la page d'accueil
+  \item la page de connexion
+  \item la page d'inscription
+  \item la page de visualisation des paris
+  \item la page de visualisation des matchs et du détail de chaque match
+\end{itemize}
+
+\begin{table}[H]
+  \label{tab:table2}
+    \begin{tabular}{l|c|c|c|c} \toprule
+      \textbf{Compte} & \textbf{Parier} & \textbf{Commenter} & \textbf{Score} & \textbf{Administrer} \\ \hline
+      Administrateur & X & X & X & X  \\ \hline
+      commentateur & X & X & X &  \\ \hline
+      Visiteur & X & & & \\ \hline
+      Utilisateur & X & & & \\ \hline
+    \end{tabular}
+    \caption{Habilitation}
+\end{table}
+
+
+\chapter{Application Web}
+
+\section{Connexion}
+
+Utilisez un des comptes utilisateur listés dans le tableau \ref{tab:table1} pour vous connecter à l'application.
+
+\chapter{Application Mobile}
+
+
+\chapter{Application Bureautique}
+
+
+\begin{appendix}
+    \listoffigures
+    \listoftables
+  \end{appendix}
+\end{document}

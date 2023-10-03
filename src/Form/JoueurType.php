@@ -2,14 +2,18 @@
 
 namespace App\Form;
 
+use App\Entity\Joueur;
 use App\Entity\Equipe;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-class EquipeType extends AbstractType
+class JoueurType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -17,15 +21,23 @@ class EquipeType extends AbstractType
             ->add('nom', TextType::class, [
                 'constraints' => new Length(['max' => 255]),
             ])
-            ->add('pays', TextType::class, [
+            ->add('prenom', TextType::class, [
                 'constraints' => new Length(['max' => 255]),
+            ])
+            ->add('numero', IntegerType::class)
+            ->add('equipe', EntityType::class, [
+                'class' => Equipe::class,
+                'choice_label' => 'nom',
+                'attr' => [
+                    'class' => 'form-select',
+                ]
             ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Equipe::class,
+            'data_class' => Joueur::class,
         ]);
     }
 }

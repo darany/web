@@ -21,7 +21,7 @@ class RencontreController extends AbstractController
      * @param RencontreRepository $rencontreRepository
      * @return Response
      */
-    #[Route('/rencontre', name: 'app_rencontre')]
+    #[Route('/rencontres', name: 'app_rencontre')]
     public function index(RencontreRepository $rencontreRepository): Response
     {
         $rencontres = $rencontreRepository->toutesLesRencontres();
@@ -33,7 +33,7 @@ class RencontreController extends AbstractController
     /**
      * Détail d'un match
      */
-    #[Route('/rencontre/{id}', name: 'app_show_rencontre')]
+    #[Route('/rencontres/{id}', name: 'app_show_rencontre')]
     public function show(RencontreRepository $rencontreRepository, int $id): Response
     {
         $rencontre = $rencontreRepository->findRencontreById($id);

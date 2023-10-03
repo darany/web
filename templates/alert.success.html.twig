@@ -1,0 +1,6 @@
+{% for flash_error in app.session.flashbag.get('success') %}
+<div class="alert alert-success alert-dismissible" role="alert">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    {{ flash_error }}
+</div>
+{% endfor %}

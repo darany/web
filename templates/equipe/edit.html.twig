@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail de l'équipe{% endblock %}
+
+{% block body %}
+
+{% include 'menu.html.twig' %}
+
+        {% include 'alert.error.html.twig' %}
+
+        <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+            <div class="col-md-6">
+                <h2 class="mb-4">Édition d'une équipe</h2>
+
+                {{ form_errors(form) }}
+
+                {{ form_start(form) }}
+                    <div class="mb-3">
+                        <div class="form-floating gx-2">
+                            <input name="{{ field_name(form.nom) }}" value="{{ field_value(form.nom) }}" type="text" class="form-control" required="required" />
+                            <label for="nom" class="form-label">Nom</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-floating gx-2">
+                            <input name="{{ field_name(form.pays) }}" value="{{ field_value(form.pays) }}" type="text" class="form-control" />
+                            <label for="pays" class="form-label">Pays</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    <a href="{{ path('app_equipes') }}" class="btn btn-secondary">Annuler</a>
+                {{ form_end(form) }}
+                    
+            </div>
+        </div>
+{% endblock %}

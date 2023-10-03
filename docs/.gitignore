@@ -1,0 +1,10 @@
+**/*.toc
+**/*.gz
+**/*.lot
+**/*.log
+**/*.lof
+**/*.fls
+**/*.fdb_latexmk
+**/*.aux
+**/*.pdf
+**/*.out

@@ -15,13 +15,13 @@ class LoginTest extends WebTestCase
 
         //Etat initial : déconnecté
         //tester sur une page qui affiche un menu, même en étant déconnecté
-        $crawler = $client->request('GET', 'rencontre');
+        $crawler = $client->request('GET', 'rencontres');
         $this->assertResponseIsSuccessful();
         $this->assertSelectorNotExists('p[id=cmdLogout]');
 
         //Se connecter
         $client->loginUser($testUser);
-        $crawler = $client->request('GET', 'rencontre');
+        $crawler = $client->request('GET', 'rencontres');
         $this->assertResponseIsSuccessful();
         $this->assertSelectorNotExists('p[id=cmdLogin]');
     }

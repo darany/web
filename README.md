@@ -7,3 +7,9 @@
 **SuperBowl** est une application fictive de prise de paris sur des matches de superbowl.
 
 
+## Installation
+
+Chargement du jeu de données de test :
+
+    php bin/console doctrine:fixtures:load --no-interaction
+

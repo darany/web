@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des équipes{% endblock %}
+
+{% block body %}
+
+{% include 'menu.html.twig' %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            {% include 'alert.success.html.twig' %}
+            {% include 'alert.error.html.twig' %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <h2 id="titleEquipes">Liste des équipes <a class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cliquez pour ajouter une équipe" href="{{ path('app_create_equipe') }}"><i class="bi bi-plus"></i></a></h2>
+            {% if equipes is empty %}
+            <p id="msgNoPTeamsFound">Il semble qu'il n'y ait encore aucune équipe de définie.</p>
+            {% else %}
+            <p>Cliquez sur une ligne pour modifier les informations d'une équipe :</p>
+
+            <div data-controller="tableManager">
+
+                <div class="form-floating gx-2">
+                    <input name="txtFilter" data-tableManager-target="source" data-action="input->tableManager#filter" type="text" class="form-control" />
+                    <label for="txtFilter" class="form-label">Chercher une équipe :</label>
+                </div>
+                <br />
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Pays</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for equipe in equipes %}
+                        <tr class="clickable" 
+                        data-tableManager-target="filterable" data-tableManager-key='{{ equipe.nom|e }} {{ equipe.pays|e }}'
+                        data-action="click->tableManager#show" data-tableManager-url-param="{{ path('app_edit_equipe', {id: equipe.id}) }}">
+                            <td><a href="{{ path('app_delete_equipe', {id: equipe.id}) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cliquez pour supprimer l'équipe" ><i class="bi bi-trash"></i></a> {{ equipe.nom|e }}</td>
+                            <td>{{ equipe.pays|e }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-1"></div>
+    </div>
+</div>
+
+
+{% endblock %}

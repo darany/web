@@ -1,0 +1,57 @@
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>500</x><y>210</y><w>140</w><h>90</h></coordinates><panel_attributes>Utilisateur
+--
+Role
+Email
+Password
+Role</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>20</x><y>220</y><w>110</w><h>90</h></coordinates><panel_attributes>Joueur
+--
+Nom
+Prénom
+Numéro</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>270</x><y>120</y><w>110</w><h>200</h></coordinates><panel_attributes>Rencontre
+--
+Jour
+Heure Début
+Heure Fin
+Statut
+ScoreEquipeA
+ScoreEquipeB
+Météo
+EquipeA
+EquipeB
+CoteEquipeA
+CoteEquipeB</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>650</x><y>80</y><w>110</w><h>110</h></coordinates><panel_attributes>Pari
+--
+Date
+Rencontre
+Equipe
+Mise
+Gain</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>130</x><y>60</y><w>160</w><h>110</h></coordinates><panel_attributes>lt=-
+m1=2
+m2=1
+&lt; rencontre</panel_attributes><additional_attributes>10;10;140;90</additional_attributes></element><element><id>UMLClass</id><coordinates><x>30</x><y>20</y><w>110</w><h>90</h></coordinates><panel_attributes>Equipe
+--
+Nom
+Pays</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>70</x><y>100</y><w>100</w><h>140</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=0..n
+&lt; appartient</panel_attributes><additional_attributes>10;120;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>690</x><y>180</y><w>70</w><h>200</h></coordinates><panel_attributes>lt=-
+m1=0..n
+m2=0..n
+&lt; mise</panel_attributes><additional_attributes>10;10;10;180</additional_attributes></element><element><id>UMLClass</id><coordinates><x>520</x><y>440</y><w>110</w><h>40</h></coordinates><panel_attributes>Commentateur</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>560</x><y>290</y><w>30</w><h>170</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;150</additional_attributes></element><element><id>UMLClass</id><coordinates><x>620</x><y>360</y><w>110</w><h>50</h></coordinates><panel_attributes>Visiteur
+--
+ValidationEmail</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>290</y><w>60</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;40;70</additional_attributes></element><element><id>Relation</id><coordinates><x>370</x><y>130</y><w>300</w><h>50</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=0..n
+&lt; concerne</panel_attributes><additional_attributes>10;20;280;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>240</x><y>440</y><w>110</w><h>60</h></coordinates><panel_attributes>Commentaire
+--
+DateHeure
+Texte</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>340</x><y>440</y><w>200</w><h>50</h></coordinates><panel_attributes>lt=-
+m1=0..n
+m2=0..n
+&lt; écrit</panel_attributes><additional_attributes>10;20;180;20</additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>310</y><w>80</w><h>150</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=0..n
+&lt; décrit</panel_attributes><additional_attributes>10;10;10;130</additional_attributes></element><element><id>Relation</id><coordinates><x>130</x><y>40</y><w>540</w><h>100</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=0..n
+&lt; envers</panel_attributes><additional_attributes>10;10;520;70</additional_attributes></element><element><id>UMLClass</id><coordinates><x>410</x><y>370</y><w>110</w><h>40</h></coordinates><panel_attributes>Administrateur</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>460</x><y>290</y><w>80</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>60;10;10;80</additional_attributes></element></diagram>

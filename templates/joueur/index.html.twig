@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des joueurs{% endblock %}
+
+{% block body %}
+
+{% include 'menu.html.twig' %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            {% include 'alert.success.html.twig' %}
+            {% include 'alert.error.html.twig' %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <h2 id="titleJoueurs">Liste des joueurs <a class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cliquez pour ajouter une joueur" href="{{ path('app_create_joueur') }}"><i class="bi bi-plus"></i></a></h2>
+            {% if joueurs is empty %}
+            <p id="msgNoPlayerFound">Il semble qu'il n'y ait encore aucun joueur n'est défini.</p>
+            {% else %}
+            <p>Cliquez sur une ligne pour modifier les informations d'un joueur :</p>
+
+            <div data-controller="tableManager">
+
+                <div class="form-floating gx-2">
+                    <input name="txtFilter" data-tableManager-target="source" data-action="input->tableManager#filter" type="text" class="form-control" />
+                    <label for="txtFilter" class="form-label">Chercher un joueur :</label>
+                </div>
+                <br />
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Numéro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for joueur in joueurs %}
+                        <tr class="clickable" 
+                        data-tableManager-target="filterable" data-tableManager-key='{{ joueur.nom|e }} {{ joueur.prenom|e }}'
+                        data-action="click->tableManager#show" data-tableManager-url-param="{{ path('app_edit_joueur', {id: joueur.id}) }}">
+                            <td><a href="{{ path('app_delete_joueur', {id: joueur.id}) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cliquez pour supprimer le joueur" ><i class="bi bi-trash"></i></a> {{ joueur.prenom|e }} {{ joueur.nom|e }}</td>
+                            <td>{{ joueur.numero }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-1"></div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -39,14 +39,21 @@ class CommentaireStateProcessor implements ProcessorInterface
             $commentaire = new Commentaire();
             $commentaire->setCommentateur($user);
             $commentaire->setDateHeure(new \DateTime());
-            $commentaire->setTexte($data->texte);
-            $rencontre->addCommentaire($commentaire);
             if (isset($data->scoreEquipeA)) {
-                $rencontre->setScoreEquipeA($data->scoreEquipeA);
+                $rencontre->setScoreEquipeA(intval($data->scoreEquipeA));
             }
             if (isset($data->scoreEquipeB)) {
-                $rencontre->setScoreEquipeB($data->scoreEquipeB);
+                $rencontre->setScoreEquipeB(intval($data->scoreEquipeB));
             }
+            if (isset($data->texte)) {
+                $texte = htmlspecialchars($data->texte);
+                $commentaire->setTexte($texte);
+                $rencontre->addCommentaire($commentaire);
+            } else {
+                $commentaire->setTexte('Mise à jour du score');
+                $rencontre->addCommentaire($commentaire);
+            }
+
             $this->entityManager->persist($rencontre);
             $this->entityManager->flush();
 

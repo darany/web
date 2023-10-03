@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail du joueur{% endblock %}
+
+{% block body %}
+
+{% include 'menu.html.twig' %}
+
+        {% include 'alert.error.html.twig' %}
+
+        <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+            <div class="col-md-6">
+                <h2 class="mb-4">Édition d'un joueur</h2>
+
+                {{ form_errors(form) }}
+
+                {{ form_start(form) }}
+                    <div class="mb-3">
+                        <div class="form-floating gx-2">
+                            <input name="{{ field_name(form.prenom) }}" value="{{ field_value(form.prenom) }}" type="text" class="form-control" required="required" />
+                            <label for="prenom" class="form-label">Prénom</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-floating gx-2">
+                            <input name="{{ field_name(form.nom) }}" value="{{ field_value(form.nom) }}" type="text" class="form-control" required="required" />
+                            <label for="nom" class="form-label">Nom</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-floating gx-2">
+                            <input name="{{ field_name(form.numero) }}" value="{{ field_value(form.numero) }}" type="number" min="1" max="100" step="1" class="form-control" required="required" />
+                            <label for="nom" class="form-label">Numéro</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-floating gx-2">
+                        {{ form_widget(form.equipe) }}
+                        <label for="joueur_equipe" class="form-label">Équipe</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    <a href="{{ path('app_joueurs') }}" class="btn btn-secondary">Annuler</a>
+                {{ form_end(form) }}
+                    
+            </div>
+        </div>
+{% endblock %}
