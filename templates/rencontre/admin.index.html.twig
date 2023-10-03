@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gérer les matchs{% endblock %}
+
+{% block body %}
+
+{% include 'menu.html.twig' %}
+
+<div class="container-fluid">
+    <div class="row"><div class="col-12">&nbsp;</div></div>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <h2 id="titleMatches">Gérer les matchs <a class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cliquez pour ajouter un match" href="{{ path('app_create_rencontre') }}"><i class="bi bi-plus"></i></a></h2>
+            {% if rencontres is empty %}
+            <p id="msgNoMatchFound">Oups ! Une erreur est apparue</p>
+            {% else %}
+
+            <p>Cliquez sur une ligne pour modifier un match :</p>
+
+            <div data-controller="tableManager">
+
+                <div class="form-floating gx-2">
+                    <input name="txtFilter" data-tableManager-target="source" data-action="input->tableManager#filter" type="text" class="form-control" />
+                    <label for="txtFilter" class="form-label">Chercher un match :</label>
+                </div>
+                <br />
+
+                <table class="table table-rounded">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Heure début - fin</th>
+                            <th>Equipe A</th>
+                            <th>Cotes équipes A - B</th>
+                            <th>Equipe B</th>
+                            <th>Statut</th>
+                            <th>Météo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for rencontre in rencontres %}
+                        <tr class="clickable" data-action="click->tableManager#show" data-tableManager-url-param="{{ path('app_edit_rencontre', {id: rencontre.id}) }}"
+                        data-tableManager-target="filterable" data-tableManager-key="{{ rencontre.EquipeA.Nom|e }} {{ rencontre.EquipeB.Nom|e }} {{ rencontre.statutString|e }} {{ rencontre.jour }}">
+                            <td><i class="bi bi-caret-right-square-fill"></i>&nbsp;{{ rencontre.jour }}</td>
+                            <td>{{ rencontre.horaire }}</td>
+                            <td>{{ rencontre.EquipeA.Nom |e }}</td>
+                            <td><span class="badge rounded-pill bg-info text-dark">{{ rencontre.CoteEquipeA |e}} &mdash; {{ rencontre.CoteEquipeB |e}}</span></td>
+                            <td>{{ rencontre.EquipeB.Nom |e }}</td>
+                            <td>{{ rencontre.statutString |e }}</td>
+                            <td>{{ rencontre.meteo |e }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-1"></div>
+    </div>
+</div>
+{% endblock %}

@@ -1,4 +1,6 @@
 \documentclass{book}
+\usepackage[cyr]{aeguill}
+\usepackage[francais]{babel}
 \usepackage{tabularx}
 \usepackage{graphicx}
 \usepackage{float}
@@ -14,7 +16,44 @@
 
 \chapter{Introduction}
 
+\section{Contexte}
+
+Tous les ans a lieu un grand évènement, le Super Bowl. Cet évènement est une compétition de football américain
+ qui est vue par des millions de personnes partout dans le monde. Stania, est une société mandatée par le 
+ Super Bowl afin de pouvoir mettre en place des applications permettant de favoriser les paris sportifs ainsi 
+ que la gestion des matchs. Stania est une start-up naissante passionnée de sport ! Ils ont construit plusieurs 
+ applications pour d'autres événements, maisjamais pour un aussi gros client, c'est un enjeu très important pour eux.
+
+Afin de pouvoir réussir le projet, ils ont fait une sélection drastique, ils ont voulu le ou la meilleur(e) 
+de tous les postulants. Fort de votre expérience au sein du Bachelor Concepteur Développeur d'Application, 
+vous avez candidaté et réussi(e) toutes les épreuves ! Vous faites partie de Stania désormais. Félicitations !
+ Votre mission sera d'aider vos collaborateurs à développer les applications demandées par le Super Bowl !
+
 \section{Cahier des charges}
+
+Le besoin donné par le Super Bowl comporte trois applications décrites dans les paragraphes suivants.
+Application Web :
+\begin{itemize}
+    \item	Possibilité d'effectuer des paris sportifs, ces paris sont configurables par l'administrateur
+    \item	Les utilisateurs peuvent miser des montants sur l'équipe qu'ils souhaitent.
+    \item	Le paiement a lieu sur place, au stade.
+    \item	Les utilisateurs peuvent visualiser les matchs à venir et miser dessus à l'avance.
+    \item	Quand un match a commencé, il n'est plus possible de miser.
+\end{itemize}
+Application mobile :
+\begin{itemize}
+    \item	Seuls les matchs où l'utilisateur a misé sur l'application web sont visibles.
+    \item	Les matchs passés sont affichés (grisé) ainsi que ceux à venir.
+    \item	Le match en cours est affiché de manière qu'on le remarque en premier.
+    \item	Au clic, nous avons accès à tous les commentaires du match ainsi qu'au score en direct (après rafraîchissement). L'utilisateur doit pouvoir retrouver le montant de son pari et envers quelle équipe.
+\end{itemize}
+Application bureautique :
+\begin{itemize}
+    \item	Lancement du début du match
+    \item	Écriture des commentaires pendant que le match se joue et mise à jour des scores quand un but est effectué.
+    \item	Fermeture du match
+Le but est de marquer un touch down avec ses trois applications ! (Un touch down signifie franchir la ligne d'en-but avec le ballon afin de marquer des points)
+\end{itemize}
 
 \subsection{Hyptohèses}
 
@@ -28,10 +67,21 @@ Nous supposons également qu'il n'est pas possible de supprimer une équipe dans
     \item Un pari a été fait sur l'équipe
 \end{itemize}
 
-2. Aucune indication sur les performances n'est indiquée dans le cahier des charges. Nous supposons que les performances
+2. Le cahier des charges mentionne la nécessité de pouvoir créer des matchs (\textit{Affectation des équipes}), mais pas les autres opérations CRUD.
+Nous supposons nécessaire de pouvoir créer, modifier et supprimer des matchs.
+Nous supposons que la météo n'est modifiable que par l'administrateur.
+Nous supposons toutefois qu'il n'est pas possible de supprimer un match dans les conditions suivantes :
+\begin{itemize}
+    \item Le match a commencé ou est terminé
+    \item Un pari a été fait sur le match
+\end{itemize}
+
+3. Aucune indication sur les performances n'est indiquée dans le cahier des charges. Nous supposons que les performances
 attendues pour les affichages de pages sont inférieures à 1 seconde. Nous supposons également que les performances attendues
 pour les opérations de l'API sont inférieures à 0,5 seconde. À l'exception de l'opération de clôture d'un match qui nécessite
 des calculs complexes.
+
+4. Concernant le statut du match, nous supposons que le statut \textit{En cours} est défini par le fait que le commentateur a commencé à commenter le match.
 
 \subsection{Mission principale du système}
 
@@ -49,7 +99,35 @@ des calculs complexes.
 \chapter{Exigences non fonctionnelles}
 
 
+\chapter{Environnement de travail}
 
+Nous avons choisi d'utiliser les outils suivants pour le développement de l'application:
+\begin{itemize}
+    \item \textbf{IDE} : VSCode
+    \item \textbf{Langage} : PHP 8.2
+    \item \textbf{Système} : Linux via WSL2
+\end{itemize}
+
+\chapter{Plan de test}
+
+Les tests automatisés sont réalisés avec PHPUnit:
+
+\begin{itemize}
+    \item \textbf{Tests unitaires} : Tests des méthodes des classes
+    \item \textbf{Tests fonctionnels} : Tests des routes de l'API
+    \item \textbf{Tests d'intégration} : Tests des interactions entre les classes
+    \item \textbf{Tests applicatif} : Tests de navigation sur l'application
+\end{itemize}
+
+Une couverture de test de 70\% est attendue pour les tests unitaires et fonctionnels.
+
+TODO: chemin
+TODO: lancement
+
+Un test de performance réalisé avec Locust est également prévu. Il permettra de vérifier que les performances attendues sur les parties accessibles
+à un public non connecté sont bien respectées (liste des rencontres par le site web et l'API).
+
+TODO: caputre d'écran
 
 \begin{appendix}
     \listoffigures

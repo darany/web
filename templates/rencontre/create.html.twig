@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer une rencontre{% endblock %}
+
+{% block body %}
+
+{% include 'menu.html.twig' %}
+
+        {% include 'alert.error.html.twig' %}
+
+        <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+            <div class="col-md-6">
+                <h2 class="mb-4">Création d'une nouvelle rencontre</h2>
+
+                {{ form_errors(form) }}
+
+                {{ form_start(form) }}
+                    <div class="mb-3">
+                        <div class="form-floating gx-2">
+                        {{ form_widget(form.equipeA) }}
+                        <label for="rencontre_equipeA" class="form-label">Équipe A</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-floating gx-2">
+                        {{ form_widget(form.equipeB) }}
+                        <label for="rencontre_equipeB" class="form-label">Équipe B</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-floating gx-2">
+                            <input name="{{ field_name(form.heureDebut) }}" type="datetime-local" class="form-control" required="required" />
+                            <label for="heureDebut" class="form-label">Heure de début</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-floating gx-2">
+                            <input name="{{ field_name(form.heureFin) }}" type="datetime-local" class="form-control" required="required" />
+                            <label for="heureFin" class="form-label">Heure de fin</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-floating gx-2">
+                            <input name="{{ field_name(form.coteEquipeA) }}" value="{{ field_value(form.coteEquipeA) }}" type="number" min="1" max="100" step="0.01" class="form-control" required="required" />
+                            <label for="coteEquipeA" class="form-label">Cote équipe A</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-floating gx-2">
+                            <input name="{{ field_name(form.coteEquipeB) }}" value="{{ field_value(form.coteEquipeB) }}" type="number" min="1" max="100" step="0.01" class="form-control" required="required" />
+                            <label for="coteEquipeB" class="form-label">Cote équipe B</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-floating gx-2">
+                            <input name="{{ field_name(form.meteo) }}" value="{{ field_value(form.meteo) }}" type="text" class="form-control" required="required" />
+                            <label for="meteo" class="form-label">Météo</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    <a href="{{ path('app_admin_rencontres') }}" class="btn btn-secondary">Annuler</a>
+                {{ form_end(form) }}
+                    
+            </div>
+        </div>
+{% endblock %}

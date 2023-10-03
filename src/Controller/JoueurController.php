@@ -19,6 +19,9 @@ class JoueurController extends AbstractController
         private JoueurRepository $joueurRepository
         ) {}
 
+    /**
+     * Liste les joueurs
+     */
     #[Route('/admin/joueurs', name: 'app_joueurs')]
     public function index(): Response
     {
@@ -28,6 +31,9 @@ class JoueurController extends AbstractController
         ]);
     }
 
+    /**
+     * Détail d'un joueur
+     */
     #[Route('/admin/joueurs/{id}', name: 'app_edit_joueur')]
     public function edit(int $id, Request $request): Response
     {
@@ -52,6 +58,9 @@ class JoueurController extends AbstractController
         ]);
     }
 
+    /**
+     * Créer un joueur
+     */
     #[Route('/admin/joueurs/create', name: 'app_create_joueur', priority: 1)]
     public function create(Request $request): Response
     {
@@ -72,7 +81,9 @@ class JoueurController extends AbstractController
         ]);
     }
 
-
+    /**
+     * Supprimer un joueur
+     */
     #[Route('/admin/joueurs/{id}/delete', name: 'app_delete_joueur')]
     public function delete(int $id): Response
     {
